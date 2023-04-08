@@ -1,5 +1,6 @@
 package com.yagato.HololiveAPI.talent;
 
+import com.yagato.HololiveAPI.talent.support_entities.AltNames;
 import com.yagato.HololiveAPI.talent.support_entities.Hashtags;
 import com.yagato.HololiveAPI.talent.support_entities.SocialMedia;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
@@ -21,6 +22,9 @@ public class Talent {
 
     @Column(name = "name")
     private String name;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)
+    private AltNames altNames;
 
     @Column(name = "debut_date")
     private Date debutDate;
@@ -76,8 +80,9 @@ public class Talent {
 
     }
 
-    public Talent(String name, Date debutDate, Date birthday, Integer age, Integer height, Integer weight, Integer subscribers, String channelId, List<String> fanNames, String oshiMark, SocialMedia socialMedia, Hashtags hashtags, String catchphrase, List<String> nicknames, Boolean isActive) {
+    public Talent(String name, AltNames altNames, Date debutDate, Date birthday, Integer age, Integer height, Integer weight, Integer subscribers, String channelId, List<String> fanNames, String oshiMark, SocialMedia socialMedia, Hashtags hashtags, String catchphrase, List<String> nicknames, Boolean isActive) {
         this.name = name;
+        this.altNames = altNames;
         this.debutDate = debutDate;
         this.birthday = birthday;
         this.age = age;
@@ -108,6 +113,14 @@ public class Talent {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public AltNames getAltNames() {
+        return altNames;
+    }
+
+    public void setAltNames(AltNames altNames) {
+        this.altNames = altNames;
     }
 
     public Date getDebutDate() {
@@ -227,6 +240,7 @@ public class Talent {
         return "Talent{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", altNames=" + altNames +
                 ", debutDate=" + debutDate +
                 ", birthday=" + birthday +
                 ", age=" + age +
