@@ -1,4 +1,4 @@
-package com.yagato.HololiveAPI.talents;
+package com.yagato.HololiveAPI.talent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

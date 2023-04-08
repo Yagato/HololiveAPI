@@ -1,4 +1,4 @@
-package com.yagato.HololiveAPI.talents;
+package com.yagato.HololiveAPI.talent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +16,6 @@ public class TalentsController {
     @Autowired
     public TalentsController(TalentRepository talentRepository) {
         this.talentRepository = talentRepository;
-    }
-
-    @GetMapping("/helloworld")
-    public String helloWorld() {
-        return "Hello World!";
     }
 
     @GetMapping("/talents")

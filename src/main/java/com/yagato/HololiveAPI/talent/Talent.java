@@ -1,6 +1,7 @@
-package com.yagato.HololiveAPI.talents;
+package com.yagato.HololiveAPI.talent;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.yagato.HololiveAPI.talent.support_entities.Hashtags;
+import com.yagato.HololiveAPI.talent.support_entities.SocialMedia;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
@@ -52,6 +53,12 @@ public class Talent {
     @Column(name = "oshi_mark")
     private String oshiMark;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)
+    private SocialMedia socialMedia;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)
+    private Hashtags hashtags;
+
     @Column(name = "catchphrase")
     private String catchphrase;
 
@@ -69,9 +76,7 @@ public class Talent {
 
     }
 
-    public Talent(String name, Date debutDate, Date birthday, Integer age, Integer height,
-                  Integer weight, Integer subscribers, String channelId, List<String> fanNames,
-                  String oshiMark, String catchphrase, List<String> nicknames, Boolean isActive) {
+    public Talent(String name, Date debutDate, Date birthday, Integer age, Integer height, Integer weight, Integer subscribers, String channelId, List<String> fanNames, String oshiMark, SocialMedia socialMedia, Hashtags hashtags, String catchphrase, List<String> nicknames, Boolean isActive) {
         this.name = name;
         this.debutDate = debutDate;
         this.birthday = birthday;
@@ -82,6 +87,8 @@ public class Talent {
         this.channelId = channelId;
         this.fanNames = fanNames;
         this.oshiMark = oshiMark;
+        this.socialMedia = socialMedia;
+        this.hashtags = hashtags;
         this.catchphrase = catchphrase;
         this.nicknames = nicknames;
         this.isActive = isActive;
@@ -175,6 +182,22 @@ public class Talent {
         this.oshiMark = oshiMark;
     }
 
+    public SocialMedia getSocialMedia() {
+        return socialMedia;
+    }
+
+    public void setSocialMedia(SocialMedia socialMedia) {
+        this.socialMedia = socialMedia;
+    }
+
+    public Hashtags getHashtags() {
+        return hashtags;
+    }
+
+    public void setHashtags(Hashtags hashtags) {
+        this.hashtags = hashtags;
+    }
+
     public String getCatchphrase() {
         return catchphrase;
     }
@@ -191,7 +214,7 @@ public class Talent {
         this.nicknames = nicknames;
     }
 
-    public Boolean getIsActive() {
+    public Boolean getActive() {
         return isActive;
     }
 
@@ -213,6 +236,8 @@ public class Talent {
                 ", channelId='" + channelId + '\'' +
                 ", fanNames=" + fanNames +
                 ", oshiMark='" + oshiMark + '\'' +
+                ", socialMedia=" + socialMedia +
+                ", hashtags=" + hashtags +
                 ", catchphrase='" + catchphrase + '\'' +
                 ", nicknames=" + nicknames +
                 ", isActive=" + isActive +
