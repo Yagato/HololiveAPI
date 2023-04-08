@@ -9,12 +9,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class TalentsController {
+public class TalentController {
 
     private TalentRepository talentRepository;
 
     @Autowired
-    public TalentsController(TalentRepository talentRepository) {
+    public TalentController(TalentRepository talentRepository) {
         this.talentRepository = talentRepository;
     }
 
