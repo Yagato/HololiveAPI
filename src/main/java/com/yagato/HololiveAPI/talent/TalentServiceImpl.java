@@ -24,6 +24,16 @@ public class TalentServiceImpl implements TalentService {
         return talentRepository.findAllByOrderById();
     }
 
+
+    /*
+    @Override
+    public List<Talent> findAllTalentsGenerations() {
+        return talentRepository.findAllTalentsGenerations();
+    }
+     */
+
+
+
     @Override
     public Talent findById(int id) {
         Optional<Talent> result = talentRepository.findById(id);

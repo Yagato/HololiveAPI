@@ -1,8 +1,12 @@
 package com.yagato.HololiveAPI.talent;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.yagato.HololiveAPI.generation.Generation;
 import com.yagato.HololiveAPI.talent.support_entities.AltNames;
 import com.yagato.HololiveAPI.talent.support_entities.Hashtags;
 import com.yagato.HololiveAPI.talent.support_entities.SocialMedia;
+import com.yagato.HololiveAPI.talent.support_entities.TalentGeneration;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
@@ -34,6 +38,14 @@ public class Talent {
 
     @Column(name = "age")
     private Integer age;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "talents_generations",
+            joinColumns = @JoinColumn(name = "talent_id"),
+            inverseJoinColumns = @JoinColumn(name = "generation_id")
+    )
+    private List<Generation> generations;
 
     @Column(name = "height")
     private Integer height;
@@ -80,12 +92,13 @@ public class Talent {
 
     }
 
-    public Talent(String name, AltNames altNames, Date debutDate, Date birthday, Integer age, Integer height, Integer weight, Integer subscribers, String channelId, List<String> fanNames, String oshiMark, SocialMedia socialMedia, Hashtags hashtags, String catchphrase, List<String> nicknames, Boolean isActive) {
+    public Talent(String name, AltNames altNames, Date debutDate, Date birthday, Integer age, List<Generation> generations, Integer height, Integer weight, Integer subscribers, String channelId, List<String> fanNames, String oshiMark, SocialMedia socialMedia, Hashtags hashtags, String catchphrase, List<String> nicknames, Boolean isActive) {
         this.name = name;
         this.altNames = altNames;
         this.debutDate = debutDate;
         this.birthday = birthday;
         this.age = age;
+        this.generations = generations;
         this.height = height;
         this.weight = weight;
         this.subscribers = subscribers;
@@ -99,10 +112,12 @@ public class Talent {
         this.isActive = isActive;
     }
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
+    @JsonProperty
     public void setId(Integer id) {
         this.id = id;
     }
@@ -145,6 +160,16 @@ public class Talent {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    //@JsonIgnore
+    public List<Generation> getGenerations() {
+        return generations;
+    }
+
+    //@JsonProperty
+    public void setGenerations(List<Generation> generations) {
+        this.generations = generations;
     }
 
     public Integer getHeight() {
@@ -244,6 +269,7 @@ public class Talent {
                 ", debutDate=" + debutDate +
                 ", birthday=" + birthday +
                 ", age=" + age +
+                ", generations=" + generations +
                 ", height=" + height +
                 ", weight=" + weight +
                 ", subscribers=" + subscribers +
