@@ -3,6 +3,7 @@ package com.yagato.HololiveAPI.talent.support_entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.yagato.HololiveAPI.illustrator.Illustrator;
+import com.yagato.HololiveAPI.rigger.Rigger;
 import com.yagato.HololiveAPI.talent.Talent;
 import jakarta.persistence.*;
 
@@ -36,15 +37,24 @@ public class Model {
     )
     private List<Illustrator> illustrators;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "models_riggers",
+            joinColumns = @JoinColumn(name = "model_id"),
+            inverseJoinColumns = @JoinColumn(name = "rigger_id")
+    )
+    private List<Rigger> riggers;
+
     public Model() {
 
     }
 
-    public Model(String name, String imageURL, Talent talent, List<Illustrator> illustrators) {
+    public Model(String name, String imageURL, Talent talent, List<Illustrator> illustrators, List<Rigger> riggers) {
         this.name = name;
         this.imageURL = imageURL;
         this.talent = talent;
         this.illustrators = illustrators;
+        this.riggers = riggers;
     }
 
     public Integer getId() {
@@ -89,6 +99,14 @@ public class Model {
         this.illustrators = illustrators;
     }
 
+    public List<Rigger> getRiggers() {
+        return riggers;
+    }
+
+    public void setRiggers(List<Rigger> riggers) {
+        this.riggers = riggers;
+    }
+
     @Override
     public String toString() {
         return "Model{" +
@@ -97,6 +115,7 @@ public class Model {
                 ", imageURL='" + imageURL + '\'' +
                 ", talent=" + talent +
                 ", illustrators=" + illustrators +
+                ", riggers=" + riggers +
                 '}';
     }
 }
