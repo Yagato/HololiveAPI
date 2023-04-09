@@ -1,7 +1,6 @@
 package com.yagato.HololiveAPI.generation;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import com.yagato.HololiveAPI.talent.Talent;
 import com.yagato.HololiveAPI.talent.support_entities.TalentGeneration;
 import jakarta.persistence.*;
@@ -10,6 +9,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "generations")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Generation {
 
     @Id
@@ -22,6 +24,7 @@ public class Generation {
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "generations", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Talent> talents;
 
     public Generation() {
@@ -33,12 +36,12 @@ public class Generation {
         this.talents = talents;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public Integer getId() {
         return id;
     }
 
-    @JsonProperty
+    //@JsonProperty
     public void setId(Integer id) {
         this.id = id;
     }
@@ -51,12 +54,12 @@ public class Generation {
         this.name = name;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public List<Talent> getTalents() {
         return talents;
     }
 
-    @JsonProperty
+    //@JsonProperty
     public void setTalents(List<Talent> talents) {
         this.talents = talents;
     }

@@ -1,12 +1,8 @@
 package com.yagato.HololiveAPI.talent;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import com.yagato.HololiveAPI.generation.Generation;
-import com.yagato.HololiveAPI.talent.support_entities.AltNames;
-import com.yagato.HololiveAPI.talent.support_entities.Hashtags;
-import com.yagato.HololiveAPI.talent.support_entities.SocialMedia;
-import com.yagato.HololiveAPI.talent.support_entities.TalentGeneration;
+import com.yagato.HololiveAPI.talent.support_entities.*;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
@@ -16,6 +12,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "talents")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Talent {
 
     @Id
@@ -45,7 +44,11 @@ public class Talent {
             joinColumns = @JoinColumn(name = "talent_id"),
             inverseJoinColumns = @JoinColumn(name = "generation_id")
     )
+    @JsonManagedReference
     private List<Generation> generations;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)
+    private List<Model> models;
 
     @Column(name = "height")
     private Integer height;
@@ -92,13 +95,14 @@ public class Talent {
 
     }
 
-    public Talent(String name, AltNames altNames, Date debutDate, Date birthday, Integer age, List<Generation> generations, Integer height, Integer weight, Integer subscribers, String channelId, List<String> fanNames, String oshiMark, SocialMedia socialMedia, Hashtags hashtags, String catchphrase, List<String> nicknames, Boolean isActive) {
+    public Talent(String name, AltNames altNames, Date debutDate, Date birthday, Integer age, List<Generation> generations, List<Model> models, Integer height, Integer weight, Integer subscribers, String channelId, List<String> fanNames, String oshiMark, SocialMedia socialMedia, Hashtags hashtags, String catchphrase, List<String> nicknames, Boolean isActive) {
         this.name = name;
         this.altNames = altNames;
         this.debutDate = debutDate;
         this.birthday = birthday;
         this.age = age;
         this.generations = generations;
+        this.models = models;
         this.height = height;
         this.weight = weight;
         this.subscribers = subscribers;
@@ -112,12 +116,12 @@ public class Talent {
         this.isActive = isActive;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public Integer getId() {
         return id;
     }
 
-    @JsonProperty
+    //@JsonProperty
     public void setId(Integer id) {
         this.id = id;
     }
@@ -170,6 +174,14 @@ public class Talent {
     //@JsonProperty
     public void setGenerations(List<Generation> generations) {
         this.generations = generations;
+    }
+
+    public List<Model> getModels() {
+        return models;
+    }
+
+    public void setModels(List<Model> models) {
+        this.models = models;
     }
 
     public Integer getHeight() {
@@ -270,6 +282,7 @@ public class Talent {
                 ", birthday=" + birthday +
                 ", age=" + age +
                 ", generations=" + generations +
+                ", models=" + models +
                 ", height=" + height +
                 ", weight=" + weight +
                 ", subscribers=" + subscribers +
