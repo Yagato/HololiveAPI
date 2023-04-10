@@ -1,53 +1,39 @@
 package com.yagato.HololiveAPI.talent;
 
-import com.yagato.HololiveAPI.generation.Generation;
-import com.yagato.HololiveAPI.talent.support_entities.TalentGeneration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
 public class TalentController {
 
-    private TalentRepository talentRepository;
+    private TalentService talentService;
 
     @Autowired
-    public TalentController(TalentRepository talentRepository) {
-        this.talentRepository = talentRepository;
+    public TalentController(TalentService talentService) {
+        this.talentService = talentService;
     }
-
-    /*
-    @GetMapping("/talents")
-    public List<Talent> findAll() {
-        return talentRepository.findAllByOrderById();
-    }
-     */
 
     @GetMapping("/talents")
     public List<Talent> findAll() {
+        return talentService.findAllByOrderById();
+    }
 
-        /*
-        Optional<Talent> tempTalent = talentRepository.findById(1);
+    @GetMapping("/talents/{name}")
+    public Talent findByName(@PathVariable String name) {
+        name = name.replace("_", " ");
 
-        Talent talent = null;
+        Talent talent = talentService.findByName(name);
 
-        if(tempTalent.isPresent()) {
-            talent = tempTalent.get();
-            List<TalentGeneration> talentGeneration = talent.getTalentGeneration();
-            for(TalentGeneration t : talentGeneration) {
-                //System.out.println(t.getTalent());
-                //System.out.println(t.getGeneration());
-                Generation g = t.getGeneration();
-                System.out.println(g.getId());
-            }
+        if(talent == null) {
+            throw new RuntimeException("Didn't find talent - " + name);
         }
-         */
 
-        return talentRepository.findAllByOrderById();
+        return talent;
     }
 }

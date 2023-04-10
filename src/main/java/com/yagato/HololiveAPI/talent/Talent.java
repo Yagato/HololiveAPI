@@ -116,12 +116,10 @@ public class Talent {
         this.isActive = isActive;
     }
 
-    //@JsonIgnore
     public Integer getId() {
         return id;
     }
 
-    //@JsonProperty
     public void setId(Integer id) {
         this.id = id;
     }
@@ -166,12 +164,10 @@ public class Talent {
         this.age = age;
     }
 
-    //@JsonIgnore
     public List<Generation> getGenerations() {
         return generations;
     }
 
-    //@JsonProperty
     public void setGenerations(List<Generation> generations) {
         this.generations = generations;
     }

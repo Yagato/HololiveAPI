@@ -1,10 +1,12 @@
 package com.yagato.HololiveAPI.talent;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TalentServiceImpl implements TalentService {
 
     private TalentRepository talentRepository;
@@ -24,15 +26,21 @@ public class TalentServiceImpl implements TalentService {
         return talentRepository.findAllByOrderById();
     }
 
-
-    /*
     @Override
-    public List<Talent> findAllTalentsGenerations() {
-        return talentRepository.findAllTalentsGenerations();
+    public Talent findByName(String name) {
+        Optional<Talent> result = Optional.ofNullable(talentRepository.findByName(name));
+
+        Talent talent = null;
+
+        if(result.isPresent()) {
+            talent = result.get();
+        }
+        else {
+            throw new RuntimeException("Didn't find talent - " + name);
+        }
+
+        return talentRepository.findByName(name);
     }
-     */
-
-
 
     @Override
     public Talent findById(int id) {
