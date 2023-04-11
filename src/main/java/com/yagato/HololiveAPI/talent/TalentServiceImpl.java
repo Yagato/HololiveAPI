@@ -61,4 +61,9 @@ public class TalentServiceImpl implements TalentService {
     public void deleteById(int id) {
         talentRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteByName(String name) {
+        talentRepository.deleteByName(name);
+    }
 }

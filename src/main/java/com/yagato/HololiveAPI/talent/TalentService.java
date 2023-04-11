@@ -18,4 +18,6 @@ public interface TalentService {
 
     void deleteById(int id);
 
+    void deleteByName(String name);
+
 }
