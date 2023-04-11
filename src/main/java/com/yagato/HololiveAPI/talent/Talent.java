@@ -38,13 +38,13 @@ public class Talent {
     @Column(name = "age")
     private Integer age;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "talents_generations",
             joinColumns = @JoinColumn(name = "talent_id"),
             inverseJoinColumns = @JoinColumn(name = "generation_id")
     )
-    @JsonManagedReference
+    //@JsonManagedReference
     private List<Generation> generations;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)

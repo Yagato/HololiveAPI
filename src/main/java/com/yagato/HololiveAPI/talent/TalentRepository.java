@@ -9,4 +9,6 @@ public interface TalentRepository extends JpaRepository<Talent, Integer> {
     List<Talent> findAllByOrderById();
 
     Talent findByName(String name);
+
+    Talent findByChannelId(String channelId);
 }

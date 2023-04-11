@@ -29,7 +29,7 @@ public class Model {
     @JoinColumn(name = "talents_id")
     private Talent talent;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "models_illustrators",
             joinColumns = @JoinColumn(name = "model_id"),
@@ -37,7 +37,7 @@ public class Model {
     )
     private List<Illustrator> illustrators;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "models_riggers",
             joinColumns = @JoinColumn(name = "model_id"),

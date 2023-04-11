@@ -20,7 +20,7 @@ public class Illustrator {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "illustrators", cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "illustrators", cascade = CascadeType.MERGE)
     private List<Model> models;
 
     public Illustrator() {

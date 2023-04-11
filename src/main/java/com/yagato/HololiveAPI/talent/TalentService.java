@@ -10,6 +10,8 @@ public interface TalentService {
 
     Talent findByName(String name);
 
+    Talent findByChannelId(String channelId);
+
     Talent findById(int id);
 
     Talent save(Talent talent);

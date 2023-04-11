@@ -20,7 +20,7 @@ public class Rigger {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "riggers", cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "riggers", cascade = CascadeType.MERGE)
     private List<Model> models;
 
     public Rigger() {

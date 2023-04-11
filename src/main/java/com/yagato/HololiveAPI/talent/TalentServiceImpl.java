@@ -28,18 +28,12 @@ public class TalentServiceImpl implements TalentService {
 
     @Override
     public Talent findByName(String name) {
-        Optional<Talent> result = Optional.ofNullable(talentRepository.findByName(name));
-
-        Talent talent = null;
-
-        if(result.isPresent()) {
-            talent = result.get();
-        }
-        else {
-            throw new RuntimeException("Didn't find talent - " + name);
-        }
-
         return talentRepository.findByName(name);
+    }
+
+    @Override
+    public Talent findByChannelId(String channelId) {
+        return talentRepository.findByChannelId(channelId);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class Generation {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "generations", cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "generations", cascade = CascadeType.MERGE)
     @JsonBackReference
     private List<Talent> talents;
 
