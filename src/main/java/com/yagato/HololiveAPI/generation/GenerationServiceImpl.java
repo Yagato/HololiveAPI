@@ -1,10 +1,11 @@
 package com.yagato.HololiveAPI.generation;
 
-import com.yagato.HololiveAPI.talent.Talent;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class GenerationServiceImpl implements GenerationService{
 
     private GenerationRepository generationRepository;

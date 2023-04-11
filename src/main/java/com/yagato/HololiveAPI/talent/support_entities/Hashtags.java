@@ -29,7 +29,7 @@ public class Hashtags {
     @Column(name = "others")
     private List<String> others;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "talents_id")
     private Talent talent;
 

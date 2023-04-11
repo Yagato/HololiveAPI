@@ -9,9 +9,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "generations")
-@JsonIdentityInfo(
+/*@JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+        property = "id")*/
 public class Generation {
 
     @Id
@@ -23,7 +23,7 @@ public class Generation {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "generations", cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "generations")
     @JsonBackReference
     private List<Talent> talents;
 

@@ -1,6 +1,8 @@
 package com.yagato.HololiveAPI.talent;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.yagato.HololiveAPI.generation.Generation;
+import com.yagato.HololiveAPI.generation.GenerationService;
 import com.yagato.HololiveAPI.imgur.ImgurClient;
 import com.yagato.HololiveAPI.talent.support_entities.Model;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -16,8 +19,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class TalentController {
 
-    private TalentService talentService;
-    private ImgurClient imgurClient;
+    private final TalentService talentService;
+
+    private final ImgurClient imgurClient;
 
     @Autowired
     public TalentController(TalentService talentService, ImgurClient imgurClient) {

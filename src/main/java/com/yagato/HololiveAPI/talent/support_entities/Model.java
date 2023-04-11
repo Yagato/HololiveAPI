@@ -25,7 +25,7 @@ public class Model {
     @Column(name = "image_url")
     private String imageURL;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "talents_id")
     private Talent talent;
 

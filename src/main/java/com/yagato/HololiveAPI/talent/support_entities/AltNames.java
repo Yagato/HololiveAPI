@@ -24,7 +24,7 @@ public class AltNames {
     @Column(name = "chinese_name")
     private String chineseName;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "talent_id")
     private Talent talent;
 
