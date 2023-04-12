@@ -1,7 +1,9 @@
 package com.yagato.HololiveAPI.talent.support_entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.yagato.HololiveAPI.talent.Talent;
 import jakarta.persistence.*;
 

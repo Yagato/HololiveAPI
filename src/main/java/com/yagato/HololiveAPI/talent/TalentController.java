@@ -92,9 +92,7 @@ public class TalentController {
 
     @PutMapping(value = "/talents")
     public Talent updateTalent(@RequestBody Talent talent) {
-
         Talent tempTalent = talentService.findByName(talent.getName());
-
 
         if(talent.getAltNames() != null) {
             talent.getAltNames().setId(tempTalent.getAltNames().getId());
@@ -103,20 +101,20 @@ public class TalentController {
 
         if(talent.getHashtags() != null) {
             talent.getHashtags().setId(tempTalent.getHashtags().getId());
-            talent.getHashtags().setTalent(tempTalent);
+            talent.getHashtags().setTalent(talent);
         }
 
         List<Model> models = talent.getModels();
 
         if(models != null) {
             for(int i = 0; i < models.size(); i++) {
-                models.get(i).setTalent(tempTalent);
+                models.get(i).setTalent(talent);
             }
         }
 
         if(talent.getSocialMedia() != null) {
             talent.getSocialMedia().setId(tempTalent.getSocialMedia().getId());
-            talent.getSocialMedia().setTalent(tempTalent);
+            talent.getSocialMedia().setTalent(talent);
         }
 
         return talentService.save(talent);

@@ -1,10 +1,8 @@
 package com.yagato.HololiveAPI.generation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.yagato.HololiveAPI.talent.Talent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,26 +25,32 @@ public class GenerationController {
         this.objectMapper = objectMapper;
     }
 
-    /*
-    @GetMapping("/generations")
-    public Map<String, Object> findAll() {
-        Map<String, Object> map = new HashMap<>();
+    @GetMapping(value = "/generations")
+    public Map<Integer, Object> findAll() {
+        Map<Integer, Object> result = new HashMap<>();
 
         List<Generation> generations = generationRepository.findAllByOrderById();
 
+        int counter = 0;
         for(Generation g : generations) {
+            Map<String, Object> map = new HashMap<>();
+
+            List<String> talentsInThisGen = new ArrayList<>();
+
             map.put("id", g.getId());
             map.put("name", g.getName());
-            map.put("talents", g.getTalents());
+
+            List<Talent> talents = g.getTalents();
+            for(Talent talent : talents) {
+                talentsInThisGen.add(talent.getName());
+            }
+            map.put("talents", talentsInThisGen);
+
+            result.put(counter, map);
+            counter++;
         }
 
-        return map;
-    }
-     */
-
-    @GetMapping("/generations")
-    public List<Generation> findAll() {
-        return generationRepository.findAllByOrderById();
+        return result;
     }
 
 
