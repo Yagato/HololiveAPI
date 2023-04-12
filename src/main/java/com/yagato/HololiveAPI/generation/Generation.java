@@ -2,7 +2,6 @@ package com.yagato.HololiveAPI.generation;
 
 import com.fasterxml.jackson.annotation.*;
 import com.yagato.HololiveAPI.talent.Talent;
-import com.yagato.HololiveAPI.talent.support_entities.TalentGeneration;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -36,12 +35,10 @@ public class Generation {
         this.talents = talents;
     }
 
-    //@JsonIgnore
     public Integer getId() {
         return id;
     }
 
-    //@JsonProperty
     public void setId(Integer id) {
         this.id = id;
     }
@@ -54,12 +51,10 @@ public class Generation {
         this.name = name;
     }
 
-    //@JsonIgnore
     public List<Talent> getTalents() {
         return talents;
     }
 
-    //@JsonProperty
     public void setTalents(List<Talent> talents) {
         this.talents = talents;
     }
