@@ -1,7 +1,5 @@
 package com.yagato.HololiveAPI.generation;
 
-import com.yagato.HololiveAPI.talent.Talent;
-
 import java.util.List;
 
 public interface GenerationService {

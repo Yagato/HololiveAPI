@@ -25,13 +25,6 @@ public class GenerationServiceImpl implements GenerationService{
         return generationRepository.findAllByOrderById();
     }
 
-    /*
-    @Override
-    public Generation findById(String id) {
-        return generationRepository.findById(id);
-    }
-     */
-
     @Override
     public Generation findByName(String name) {
         return generationRepository.findByName(name);
@@ -47,7 +40,7 @@ public class GenerationServiceImpl implements GenerationService{
             generation = result.get();
         }
         else {
-            throw new RuntimeException("Didn't find generation id - " + id);
+            throw new RuntimeException("Couldn't find generation id - " + id);
         }
 
         return generation;
