@@ -2,10 +2,7 @@ package com.yagato.HololiveAPI.generation;
 
 import com.yagato.HololiveAPI.talent.Talent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +47,12 @@ public class GenerationController {
         return generationResponsesList;
     }
 
-    @GetMapping("/generations/id={id}")
-    public GenerationResponse findGenerationById(@PathVariable String id) {
-        Generation generation = generationService.findById(id);
+    @GetMapping("/generations/{generationId}")
+    public GenerationResponse findGenerationById(@PathVariable int generationId) {
+        Generation generation = generationService.findById(generationId);
 
         if(generation == null) {
-            throw new RuntimeException("Didn't find generation id - " + id);
+            throw new RuntimeException("Generation id not found - " + generationId);
         }
 
         GenerationResponse generationResponse = new GenerationResponse();
@@ -75,5 +72,29 @@ public class GenerationController {
         return generationResponse;
     }
 
+    @PostMapping("/generations")
+    public Generation addGeneration(@RequestBody Generation generation) {
+        generation.setId(0);
+
+        return generationService.save(generation);
+    }
+
+    @PutMapping("/generations")
+    public Generation updateGeneration(@RequestBody Generation generation) {
+        return generationService.save(generation);
+    }
+
+    @DeleteMapping("/generations/{generationId}")
+    public String deleteGeneration(@PathVariable int generationId) {
+        Generation tempGeneration = generationService.findById(generationId);
+
+        if(tempGeneration == null) {
+            throw new RuntimeException("Generation id not found - " + generationId);
+        }
+
+        generationService.deleteById(generationId);
+
+        return "Deleted Generation with id - " + generationId;
+    }
 
 }

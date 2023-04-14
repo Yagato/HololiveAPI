@@ -25,10 +25,12 @@ public class GenerationServiceImpl implements GenerationService{
         return generationRepository.findAllByOrderById();
     }
 
+    /*
     @Override
     public Generation findById(String id) {
         return generationRepository.findById(id);
     }
+     */
 
     @Override
     public Generation findByName(String name) {
@@ -37,7 +39,7 @@ public class GenerationServiceImpl implements GenerationService{
 
     @Override
     public Generation findById(int id) {
-        Optional<Generation> result = generationRepository.findById(id);
+        Optional<Generation> result = Optional.ofNullable(generationRepository.findById(id));
 
         Generation generation = null;
 
