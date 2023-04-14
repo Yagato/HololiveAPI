@@ -8,7 +8,7 @@ import java.util.Optional;
 @Service
 public class IllustratorServiceImpl implements IllustratorService {
 
-    private IllustratorRepository illustratorRepository;
+    private final IllustratorRepository illustratorRepository;
 
     public IllustratorServiceImpl(IllustratorRepository illustratorRepository) {
         this.illustratorRepository = illustratorRepository;
