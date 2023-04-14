@@ -53,13 +53,9 @@ public class ScheduledUpdateSubscribers {
                     + channelId + "&key=" + YOUTUBE_API_KEY;
 
             HttpResponse<JsonNode> response = Unirest.get(uri).asJson();
-
             JSONObject jsonObject = response.getBody().getObject();
-
             JSONObject items = jsonObject.getJSONArray("items").getJSONObject(0);
-
             JSONObject statistics = items.getJSONObject("statistics");
-
             String subscribers = statistics.getString("subscriberCount");
 
             talent.setSubscribers(Integer.parseInt(subscribers));
