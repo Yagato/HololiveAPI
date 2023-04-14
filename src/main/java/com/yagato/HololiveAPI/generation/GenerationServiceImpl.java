@@ -26,6 +26,16 @@ public class GenerationServiceImpl implements GenerationService{
     }
 
     @Override
+    public Generation findById(String id) {
+        return generationRepository.findById(id);
+    }
+
+    @Override
+    public Generation findByName(String name) {
+        return generationRepository.findByName(name);
+    }
+
+    @Override
     public Generation findById(int id) {
         Optional<Generation> result = generationRepository.findById(id);
 

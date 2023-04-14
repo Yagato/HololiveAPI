@@ -8,4 +8,7 @@ public interface GenerationRepository extends JpaRepository<Generation, Integer>
 
     List<Generation> findAllByOrderById();
 
+    Generation findById(String id);
+    Generation findByName(String name);
+
 }

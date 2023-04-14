@@ -1,56 +1,78 @@
 package com.yagato.HololiveAPI.generation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yagato.HololiveAPI.talent.Talent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class GenerationController {
 
-    private GenerationRepository generationRepository;
-    private ObjectMapper objectMapper;
+    private final GenerationService generationService;
 
     @Autowired
-    public GenerationController(GenerationRepository generationRepository, ObjectMapper objectMapper) {
-        this.generationRepository = generationRepository;
-        this.objectMapper = objectMapper;
+    public GenerationController(GenerationService generationService) {
+        this.generationService = generationService;
     }
 
     @GetMapping(value = "/generations")
-    public Map<Integer, Object> findAll() {
-        Map<Integer, Object> result = new HashMap<>();
+    public List<GenerationResponse> findAll() {
+        List<GenerationResponse> generationResponsesList = new ArrayList<>();
 
-        List<Generation> generations = generationRepository.findAllByOrderById();
+        List<Generation> generations = generationService.findAllByOrderById();
 
-        int counter = 0;
         for(Generation g : generations) {
-            Map<String, Object> map = new HashMap<>();
+            GenerationResponse generationResponse = new GenerationResponse();
 
-            List<String> talentsInThisGen = new ArrayList<>();
+            List<String> talentsNames = new ArrayList<>();
 
-            map.put("id", g.getId());
-            map.put("name", g.getName());
+            generationResponse.setId(g.getId());
+            generationResponse.setName(g.getName());
 
             List<Talent> talents = g.getTalents();
-            for(Talent talent : talents) {
-                talentsInThisGen.add(talent.getName());
-            }
-            map.put("talents", talentsInThisGen);
 
-            result.put(counter, map);
-            counter++;
+            for(Talent talent : talents) {
+                if(talent.getActive())
+                    talentsNames.add(talent.getName());
+            }
+
+            generationResponse.setTalent(talentsNames);
+
+            generationResponsesList.add(generationResponse);
         }
 
-        return result;
+        return generationResponsesList;
+    }
+
+    @GetMapping("/generations/id={id}")
+    public GenerationResponse findGenerationById(@PathVariable String id) {
+        Generation generation = generationService.findById(id);
+
+        if(generation == null) {
+            throw new RuntimeException("Didn't find generation id - " + id);
+        }
+
+        GenerationResponse generationResponse = new GenerationResponse();
+        generationResponse.setId(generation.getId());
+        generationResponse.setName(generation.getName());
+
+        List<String> talentsNames = new ArrayList<>();
+        List<Talent> talents = generation.getTalents();
+
+        for(Talent talent : talents) {
+            if(talent.getActive())
+                talentsNames.add(talent.getName());
+        }
+
+        generationResponse.setTalent(talentsNames);
+
+        return generationResponse;
     }
 
 

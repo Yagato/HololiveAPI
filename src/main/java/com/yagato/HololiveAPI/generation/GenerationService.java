@@ -10,6 +10,10 @@ public interface GenerationService {
 
     List<Generation> findAllByOrderById();
 
+    Generation findById(String id);
+
+    Generation findByName(String name);
+
     Generation findById(int id);
 
     Generation save(Generation generation);
