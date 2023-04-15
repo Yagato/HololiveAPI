@@ -26,18 +26,12 @@ public class IllustratorServiceImpl implements IllustratorService {
 
     @Override
     public Illustrator findById(int id) {
-        Optional<Illustrator> result = Optional.ofNullable(illustratorRepository.findById(id));
+        return illustratorRepository.findById(id);
+    }
 
-        Illustrator illustrator = null;
-
-        if(result.isPresent()) {
-            illustrator = result.get();
-        }
-        else {
-            throw new RuntimeException("Couldn't find illustrator id - " + id);
-        }
-
-        return illustrator;
+    @Override
+    public Illustrator findByName(String name) {
+        return illustratorRepository.findByName(name);
     }
 
     @Override

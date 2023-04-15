@@ -10,6 +10,8 @@ public interface RiggerService {
 
     Rigger findById(int id);
 
+    Rigger findByName(String name);
+    
     Rigger save(Rigger rigger);
 
     void deleteById(int id);

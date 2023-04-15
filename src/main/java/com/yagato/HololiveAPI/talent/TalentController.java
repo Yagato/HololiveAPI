@@ -1,7 +1,11 @@
 package com.yagato.HololiveAPI.talent;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.yagato.HololiveAPI.illustrator.Illustrator;
+import com.yagato.HololiveAPI.illustrator.IllustratorService;
 import com.yagato.HololiveAPI.imgur.ImgurClient;
+import com.yagato.HololiveAPI.rigger.Rigger;
+import com.yagato.HololiveAPI.rigger.RiggerService;
 import com.yagato.HololiveAPI.talent.support_entities.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,13 +21,19 @@ import java.util.List;
 public class TalentController {
 
     private final TalentService talentService;
-
+    private final IllustratorService illustratorService;
+    private final RiggerService riggerService;
     private final ImgurClient imgurClient;
 
     @Autowired
-    public TalentController(TalentService talentService, ImgurClient imgurClient) {
+    public TalentController(TalentService talentService,
+                            ImgurClient imgurClient,
+                            IllustratorService illustratorService,
+                            RiggerService riggerService) {
         this.talentService = talentService;
         this.imgurClient = imgurClient;
+        this.illustratorService = illustratorService;
+        this.riggerService = riggerService;
     }
 
     @GetMapping("/talents")
@@ -74,6 +84,24 @@ public class TalentController {
         if(models != null) {
             for(int i = 0; i < models.size(); i++) {
                 models.get(i).setId(0);
+
+                List<Illustrator> illustrators = models.get(i).getIllustrators();
+
+                for(Illustrator illustrator : illustrators) {
+                    if(illustratorService.findByName(illustrator.getName()) == null) {
+                        System.out.println("INSIDE IF STATEMENT");
+                        illustrator.setId(0);
+                    }
+                }
+
+                List<Rigger> riggers = models.get(i).getRiggers();
+
+                for(Rigger rigger : riggers) {
+                    if(riggerService.findByName(rigger.getName()) == null) {
+                        rigger.setId(0);
+                    }
+                }
+
                 String base64URL = Base64.getEncoder().encodeToString(image[i].getBytes());
                 String link = imgurClient.uploadImage(base64URL);
                 models.get(i).setTalent(talent);

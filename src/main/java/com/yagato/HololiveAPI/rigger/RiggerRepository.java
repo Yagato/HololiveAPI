@@ -11,4 +11,6 @@ public interface RiggerRepository extends JpaRepository<Rigger, Integer> {
 
     Rigger findById(int id);
 
+    Rigger findByName(String name);
+
 }

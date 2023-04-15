@@ -10,6 +10,8 @@ public interface IllustratorService {
 
     Illustrator findById(int id);
 
+    Illustrator findByName(String name);
+
     Illustrator save(Illustrator illustrator);
 
     void deleteById(int id);

@@ -10,4 +10,6 @@ public interface IllustratorRepository extends JpaRepository<Illustrator, Intege
 
     Illustrator findById(int id);
 
+    Illustrator findByName(String name);
+
 }

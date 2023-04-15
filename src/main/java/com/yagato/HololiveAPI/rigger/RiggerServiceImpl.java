@@ -26,18 +26,12 @@ public class RiggerServiceImpl implements RiggerService {
 
     @Override
     public Rigger findById(int id) {
-        Optional<Rigger> result = Optional.ofNullable(riggerRepository.findById(id));
+        return riggerRepository.findById(id);
+    }
 
-        Rigger rigger = null;
-
-        if(result.isPresent()) {
-            rigger = result.get();
-        }
-        else {
-            throw new RuntimeException("Couldn't find rigger id - " + id);
-        }
-
-        return rigger;
+    @Override
+    public Rigger findByName(String name) {
+        return riggerRepository.findByName(name);
     }
 
     @Override
