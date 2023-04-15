@@ -87,18 +87,21 @@ public class TalentController {
 
                 List<Illustrator> illustrators = models.get(i).getIllustrators();
 
-                for(Illustrator illustrator : illustrators) {
-                    if(illustratorService.findByName(illustrator.getName()) == null) {
-                        System.out.println("INSIDE IF STATEMENT");
-                        illustrator.setId(0);
+                if(illustrators != null) {
+                    for (Illustrator illustrator : illustrators) {
+                        if (illustratorService.findByName(illustrator.getName()) == null) {
+                            illustrator.setId(0);
+                        }
                     }
                 }
 
                 List<Rigger> riggers = models.get(i).getRiggers();
 
-                for(Rigger rigger : riggers) {
-                    if(riggerService.findByName(rigger.getName()) == null) {
-                        rigger.setId(0);
+                if(riggers != null) {
+                    for (Rigger rigger : riggers) {
+                        if (riggerService.findByName(rigger.getName()) == null) {
+                            rigger.setId(0);
+                        }
                     }
                 }
 
@@ -132,8 +135,8 @@ public class TalentController {
         List<Model> models = talent.getModels();
 
         if(models != null) {
-            for(int i = 0; i < models.size(); i++) {
-                models.get(i).setTalent(talent);
+            for (Model model : models) {
+                model.setTalent(talent);
             }
         }
 

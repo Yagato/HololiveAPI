@@ -42,19 +42,31 @@ public class ScheduledUpdateSubscribers {
     // 0 0 9-17 * * MON-FRI = on the hour nine-to-five weekdays
     // 0 0 0 25 12 ? = every Christmas Day at midnight
     // More info at: https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm
-    @Scheduled(cron = "* */1 * * * *")
+    @Scheduled(cron = "*/30 * * * * *")
     public void updateSubscribers() throws UnirestException {
         List<Talent> talents = talentService.findAllByOrderById();
 
         for(Talent talent : talents) {
             String channelId = talent.getChannelId();
 
+
+            if(channelId.equals("null")) {
+                logger.info("Skipping talent: " + talent.getName());
+                continue;
+            }
+
             String uri = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id="
                     + channelId + "&key=" + YOUTUBE_API_KEY;
 
             HttpResponse<JsonNode> response = Unirest.get(uri).asJson();
-            JSONObject jsonObject = response.getBody().getObject();
-            JSONObject items = jsonObject.getJSONArray("items").getJSONObject(0);
+            JSONObject responseBody = response.getBody().getObject();
+
+            if(!responseBody.has("items")) {
+                logger.info("Skipping talent: " + talent.getName());
+                continue;
+            }
+
+            JSONObject items = responseBody.getJSONArray("items").getJSONObject(0);
             JSONObject statistics = items.getJSONObject("statistics");
             String subscribers = statistics.getString("subscriberCount");
 

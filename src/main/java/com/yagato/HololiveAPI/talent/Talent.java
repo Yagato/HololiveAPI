@@ -47,14 +47,14 @@ public class Talent {
     //@JsonManagedReference
     private List<Generation> generations;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.PERSIST)
     private List<Model> models;
 
     @Column(name = "height")
     private Integer height;
 
     @Column(name = "weight")
-    private Integer weight;
+    private Double weight;
 
     @Column(name = "subscribers")
     private Integer subscribers;
@@ -91,11 +91,14 @@ public class Talent {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @Column(name = "graduation_date")
+    private Date graduationDate;
+
     public Talent() {
 
     }
 
-    public Talent(String name, AltNames altNames, Date debutDate, Date birthday, Integer age, List<Generation> generations, List<Model> models, Integer height, Integer weight, Integer subscribers, String channelId, List<String> fanNames, String oshiMark, SocialMedia socialMedia, Hashtags hashtags, String catchphrase, List<String> nicknames, Boolean isActive) {
+    public Talent(String name, AltNames altNames, Date debutDate, Date birthday, Integer age, List<Generation> generations, List<Model> models, Integer height, Double weight, Integer subscribers, String channelId, List<String> fanNames, String oshiMark, SocialMedia socialMedia, Hashtags hashtags, String catchphrase, List<String> nicknames, Boolean isActive, Date graduationDate) {
         this.name = name;
         this.altNames = altNames;
         this.debutDate = debutDate;
@@ -114,6 +117,7 @@ public class Talent {
         this.catchphrase = catchphrase;
         this.nicknames = nicknames;
         this.isActive = isActive;
+        this.graduationDate = graduationDate;
     }
 
     public Integer getId() {
@@ -188,11 +192,11 @@ public class Talent {
         this.height = height;
     }
 
-    public Integer getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
@@ -268,6 +272,14 @@ public class Talent {
         isActive = active;
     }
 
+    public Date getGraduationDate() {
+        return graduationDate;
+    }
+
+    public void setGraduationDate(Date graduationDate) {
+        this.graduationDate = graduationDate;
+    }
+
     @Override
     public String toString() {
         return "Talent{" +
@@ -290,6 +302,7 @@ public class Talent {
                 ", catchphrase='" + catchphrase + '\'' +
                 ", nicknames=" + nicknames +
                 ", isActive=" + isActive +
+                ", graduationDate=" + graduationDate +
                 '}';
     }
 }
