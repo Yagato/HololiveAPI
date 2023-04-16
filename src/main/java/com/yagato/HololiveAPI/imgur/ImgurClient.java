@@ -32,6 +32,8 @@ public class ImgurClient {
 
         JSONObject jsonObject = response.getBody().getObject();
 
+        System.out.println(jsonObject);
+
         JSONObject data = jsonObject.getJSONObject("data");
 
         String link = data.getString("link");

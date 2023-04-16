@@ -1,11 +1,13 @@
 package com.yagato.HololiveAPI.illustrator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.yagato.HololiveAPI.talent.support_entities.Model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "illustrators")
@@ -20,7 +22,8 @@ public class Illustrator {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "illustrators", cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "illustrators")
+    @JsonBackReference
     private List<Model> models;
 
     public Illustrator() {
@@ -32,10 +35,12 @@ public class Illustrator {
         this.models = models;
     }
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
+    @JsonProperty
     public void setId(Integer id) {
         this.id = id;
     }
@@ -65,5 +70,18 @@ public class Illustrator {
                 ", name='" + name + '\'' +
                 ", models=" + models +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Illustrator that = (Illustrator) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(models, that.models);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, models);
     }
 }

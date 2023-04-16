@@ -7,7 +7,9 @@ import com.yagato.HololiveAPI.rigger.Rigger;
 import com.yagato.HololiveAPI.talent.Talent;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "models")
@@ -29,7 +31,13 @@ public class Model {
     @JoinColumn(name = "talent_id")
     private Talent talent;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                CascadeType.PERSIST,
+                CascadeType.DETACH,
+                CascadeType.REFRESH
+            }
+    )
     @JoinTable(
             name = "models_illustrators",
             joinColumns = @JoinColumn(name = "model_id"),
@@ -37,7 +45,13 @@ public class Model {
     )
     private List<Illustrator> illustrators;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                CascadeType.PERSIST,
+                CascadeType.DETACH,
+                CascadeType.REFRESH
+            }
+    )
     @JoinTable(
             name = "models_riggers",
             joinColumns = @JoinColumn(name = "model_id"),
@@ -57,10 +71,12 @@ public class Model {
         this.riggers = riggers;
     }
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
+    @JsonProperty
     public void setId(Integer id) {
         this.id = id;
     }
@@ -117,5 +133,18 @@ public class Model {
                 ", illustrators=" + illustrators +
                 ", riggers=" + riggers +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Model model = (Model) o;
+        return Objects.equals(id, model.id) && Objects.equals(name, model.name) && Objects.equals(imageURL, model.imageURL) && Objects.equals(talent, model.talent) && Objects.equals(illustrators, model.illustrators) && Objects.equals(riggers, model.riggers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, imageURL, talent, illustrators, riggers);
     }
 }

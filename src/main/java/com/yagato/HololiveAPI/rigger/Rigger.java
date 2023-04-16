@@ -1,11 +1,13 @@
 package com.yagato.HololiveAPI.rigger;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.yagato.HololiveAPI.talent.support_entities.Model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "riggers")
@@ -20,7 +22,8 @@ public class Rigger {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "riggers", cascade = CascadeType.MERGE)
+    @ManyToMany(mappedBy = "riggers")
+    @JsonBackReference
     private List<Model> models;
 
     public Rigger() {
@@ -32,10 +35,12 @@ public class Rigger {
         this.models = models;
     }
 
+    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
+    @JsonProperty
     public void setId(Integer id) {
         this.id = id;
     }
@@ -65,5 +70,18 @@ public class Rigger {
                 ", name='" + name + '\'' +
                 ", models=" + models +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rigger rigger = (Rigger) o;
+        return Objects.equals(id, rigger.id) && Objects.equals(name, rigger.name) && Objects.equals(models, rigger.models);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, models);
     }
 }
