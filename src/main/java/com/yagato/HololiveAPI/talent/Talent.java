@@ -47,7 +47,7 @@ public class Talent {
     //@JsonManagedReference
     private List<Generation> generations;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)
     private List<Model> models;
 
     @Column(name = "height")

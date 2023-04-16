@@ -89,8 +89,12 @@ public class TalentController {
 
                 if(illustrators != null) {
                     for (Illustrator illustrator : illustrators) {
-                        if (illustratorService.findByName(illustrator.getName()) == null) {
+                        Illustrator tempIllustrator = illustratorService.findByName(illustrator.getName());
+                        if (tempIllustrator == null) {
                             illustrator.setId(0);
+                        }
+                        else {
+                            illustrator.setId(tempIllustrator.getId());
                         }
                     }
                 }
@@ -99,8 +103,12 @@ public class TalentController {
 
                 if(riggers != null) {
                     for (Rigger rigger : riggers) {
-                        if (riggerService.findByName(rigger.getName()) == null) {
+                        Rigger tempRigger = riggerService.findByName(rigger.getName());
+                        if (tempRigger == null) {
                             rigger.setId(0);
+                        }
+                        else {
+                            rigger.setId(tempRigger.getId());
                         }
                     }
                 }
