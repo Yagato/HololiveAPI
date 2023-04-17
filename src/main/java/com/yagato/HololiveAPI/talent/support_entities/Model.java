@@ -33,9 +33,9 @@ public class Model {
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
-                CascadeType.PERSIST,
-                CascadeType.DETACH,
-                CascadeType.REFRESH
+                    CascadeType.PERSIST,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH
             }
     )
     @JoinTable(
@@ -47,9 +47,9 @@ public class Model {
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
-                CascadeType.PERSIST,
-                CascadeType.DETACH,
-                CascadeType.REFRESH
+                    CascadeType.PERSIST,
+                    CascadeType.DETACH,
+                    CascadeType.REFRESH
             }
     )
     @JoinTable(
@@ -71,12 +71,12 @@ public class Model {
         this.riggers = riggers;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public Integer getId() {
         return id;
     }
 
-    @JsonProperty
+    //@JsonProperty
     public void setId(Integer id) {
         this.id = id;
     }

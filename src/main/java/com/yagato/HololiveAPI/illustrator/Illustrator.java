@@ -35,12 +35,10 @@ public class Illustrator {
         this.models = models;
     }
 
-    @JsonIgnore
     public Integer getId() {
         return id;
     }
 
-    @JsonProperty
     public void setId(Integer id) {
         this.id = id;
     }

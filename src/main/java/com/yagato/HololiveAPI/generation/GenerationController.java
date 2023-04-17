@@ -35,8 +35,7 @@ public class GenerationController {
             List<Talent> talents = g.getTalents();
 
             for(Talent talent : talents) {
-                if(talent.getActive())
-                    talentsNames.add(talent.getName());
+                talentsNames.add(talent.getName());
             }
 
             generationResponse.setTalent(talentsNames);
@@ -63,8 +62,7 @@ public class GenerationController {
         List<Talent> talents = generation.getTalents();
 
         for(Talent talent : talents) {
-            if(talent.getActive())
-                talentsNames.add(talent.getName());
+            talentsNames.add(talent.getName());
         }
 
         generationResponse.setTalent(talentsNames);

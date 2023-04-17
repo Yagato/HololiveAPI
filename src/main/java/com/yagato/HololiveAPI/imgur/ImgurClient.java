@@ -6,6 +6,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +33,13 @@ public class ImgurClient {
 
         JSONObject jsonObject = response.getBody().getObject();
 
-        System.out.println(jsonObject);
-
         JSONObject data = jsonObject.getJSONObject("data");
+
+        if(data.has("error")) {
+            JSONObject error = data.getJSONObject("error");
+            String message = error.getString("message");
+            throw new RuntimeException(message);
+        }
 
         String link = data.getString("link");
 
