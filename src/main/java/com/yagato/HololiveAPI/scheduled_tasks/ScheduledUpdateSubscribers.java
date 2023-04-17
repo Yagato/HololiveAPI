@@ -42,7 +42,7 @@ public class ScheduledUpdateSubscribers {
     // 0 0 9-17 * * MON-FRI = on the hour nine-to-five weekdays
     // 0 0 0 25 12 ? = every Christmas Day at midnight
     // More info at: https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm
-    @Scheduled(cron = "*/30 * * * * *")
+    @Scheduled(cron = "0 0 */8 * * *") // run this task every 8 hours
     public void updateSubscribers() throws UnirestException {
         List<Talent> talents = talentService.findAllByOrderById();
 
@@ -50,7 +50,7 @@ public class ScheduledUpdateSubscribers {
             String channelId = talent.getChannelId();
 
 
-            if(channelId.equals("null")) {
+            if(channelId == null) {
                 logger.info("Skipping talent: " + talent.getName());
                 continue;
             }
@@ -74,9 +74,11 @@ public class ScheduledUpdateSubscribers {
 
             talentService.save(talent);
 
-            logger.info("Talent: " + talent.getName() +
-                    " Subscribers: " + subscribers +
+            logger.info("Talent: " + talent.getName() + " | " +
+                    " Subscribers: " + subscribers + " | " +
                     " updated at {}", simpleDateFormat.format((new Date())));
         }
+
+        logger.info("Finished updating talents at {}", simpleDateFormat.format(new Date()));
     }
 }
