@@ -1,43 +1,62 @@
 package com.yagato.HololiveAPI.controller;
 
-import com.yagato.HololiveAPI.dto.TalentDto;
-import com.yagato.HololiveAPI.model.Model;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.yagato.HololiveAPI.model.Illustrator;
+import com.yagato.HololiveAPI.service.IllustratorService;
+import com.yagato.HololiveAPI.utils.ImgurClient;
+import com.yagato.HololiveAPI.model.Rigger;
+import com.yagato.HololiveAPI.service.RiggerService;
 import com.yagato.HololiveAPI.model.Talent;
 import com.yagato.HololiveAPI.service.TalentService;
-import com.yagato.HololiveAPI.service.dto.TalentMapper;
+import com.yagato.HololiveAPI.model.Model;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/talents")
+@RequiredArgsConstructor
 public class TalentController {
 
     private final TalentService talentService;
 
-    private final TalentMapper talentMapper;
-
     @GetMapping("/all")
-    public List<TalentDto> findAll() {
+    public List<Talent> findAll() {
         return talentService.findAllByOrderById();
     }
 
     @GetMapping("/name={name}")
-    public TalentDto findByName(@PathVariable String name) {
+    public Talent findByName(@PathVariable String name) {
         name = name.replace("_", " ");
 
-        return talentService.findByName(name);
+        Talent talent = talentService.findByName(name);
+
+        if (talent == null) {
+            throw new RuntimeException("Didn't find talent - " + name);
+        }
+
+        return talent;
     }
 
     @GetMapping("/channelId={channelId}")
-    public TalentDto findByChannelId(@PathVariable String channelId) {
-        return talentService.findByChannelId(channelId);
+    public Talent findByChannelId(@PathVariable String channelId) {
+        Talent talent = talentService.findByChannelId(channelId);
+
+        if (talent == null) {
+            throw new RuntimeException("Didn't find talent with channel ID - " + channelId);
+        }
+
+        return talent;
     }
 
     @PostMapping("/new")
-    public TalentDto addTalent(@RequestBody Talent talent) {
+    public Talent addTalent(@RequestBody Talent talent) {
         talent.setId(0);
 
         if (talent.getAltNames() != null)
@@ -49,22 +68,20 @@ public class TalentController {
         if (talent.getSocialMedia() != null)
             talent.getSocialMedia().setTalent(talent);
 
-        talentService.save(talent);
-
-        return talentService.findByName(talent.getName());
+        return talentService.save(talent);
     }
 
     @PutMapping("/update")
-    public TalentDto updateTalent(@RequestBody Talent talent) {
-        TalentDto tempTalentDto = talentService.findByName(talent.getName());
+    public Talent updateTalent(@RequestBody Talent talent) {
+        Talent tempTalent = talentService.findByName(talent.getName());
 
         if (talent.getAltNames() != null) {
-            talent.getAltNames().setId(tempTalentDto.alternative_names().getId());
+            talent.getAltNames().setId(tempTalent.getAltNames().getId());
             talent.getAltNames().setTalent(talent);
         }
 
         if (talent.getHashtags() != null) {
-            talent.getHashtags().setId(tempTalentDto.hashtags().getId());
+            talent.getHashtags().setId(tempTalent.getHashtags().getId());
             talent.getHashtags().setTalent(talent);
         }
 
@@ -80,22 +97,20 @@ public class TalentController {
         }
 
         if (talent.getSocialMedia() != null) {
-            talent.getSocialMedia().setId(tempTalentDto.social_media().getId());
+            talent.getSocialMedia().setId(tempTalent.getSocialMedia().getId());
             talent.getSocialMedia().setTalent(talent);
         }
 
-        talentService.save(talent);
-
-        return talentService.findByName(talent.getName());
+        return talentService.save(talent);
     }
 
     @DeleteMapping("/{name}")
     public String deleteTalent(@PathVariable String name) {
         name = name.replace("_", " ");
 
-        TalentDto talentDto = talentService.findByName(name);
+        Talent talent = talentService.findByName(name);
 
-        if (talentDto == null) {
+        if (talent == null) {
             throw new RuntimeException("Couldn't find talent - " + name);
         }
 
