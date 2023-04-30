@@ -17,16 +17,19 @@ public class AltNames {
     @GeneratedValue(generator = "alt_names_id_generator", strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     @Getter(onMethod_ = @JsonIgnore)
-    @Setter(onMethod_ = @JsonProperty)
+    @Setter(onMethod_ = @JsonProperty("id"))
     private Integer id;
 
     @Column(name = "japanese_name")
+    @JsonProperty("japanese_name")
     private String japaneseName;
 
     @Column(name = "english_name")
+    @JsonProperty("english_name")
     private String englishName;
 
     @Column(name = "chinese_name")
+    @JsonProperty("chinese_name")
     private String chineseName;
 
     @OneToOne(fetch = FetchType.LAZY)

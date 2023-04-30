@@ -52,14 +52,13 @@ public class ModelController {
         if (illustrators != null) {
             for (Illustrator illustrator : illustrators) {
                 Illustrator tempIllustrator = illustratorService.findByName(illustrator.getName());
-                System.out.println(tempIllustrator);
 
                 if (tempIllustrator == null) {
                     illustrator.setId(0);
                     illustratorService.save(illustrator);
+                    tempIllustrator = illustratorService.findByName(illustrator.getName());
                 }
 
-                tempIllustrator = illustratorService.findByName(illustrator.getName());
                 illustrator.setId(tempIllustrator.getId());
             }
         }
@@ -73,9 +72,9 @@ public class ModelController {
                 if (tempRigger == null) {
                     rigger.setId(0);
                     riggerService.save(rigger);
+                    tempRigger = riggerService.findByName(rigger.getName());
                 }
 
-                tempRigger = riggerService.findByName(rigger.getName());
                 rigger.setId(tempRigger.getId());
             }
         }
@@ -92,6 +91,13 @@ public class ModelController {
     }
 
     // todo: add PUT mapping
+//    @PutMapping(
+//            value = "/update",
+//            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+//    )
+//    public Model updateModel() {
+//
+//    }
 
     @DeleteMapping("/{modelId}")
     public String deleteModel(@PathVariable int modelId) {

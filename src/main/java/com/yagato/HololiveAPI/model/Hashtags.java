@@ -19,19 +19,23 @@ public class Hashtags {
     @GeneratedValue(generator = "hashtags_id_generator", strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     @Getter(onMethod_ = @JsonIgnore)
-    @Setter(onMethod_ = @JsonProperty)
+    @Setter(onMethod_ = @JsonProperty("id"))
     private Integer id;
 
     @Column(name = "general")
+    @JsonProperty("general")
     private String general;
 
     @Column(name = "stream_talk")
+    @JsonProperty("stream_talk")
     private String streamTalk;
 
     @Column(name = "fanart")
+    @JsonProperty("fanart")
     private String fanart;
 
     @Column(name = "others")
+    @JsonProperty("others")
     private List<String> others;
 
     @OneToOne(fetch = FetchType.LAZY)
