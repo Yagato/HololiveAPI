@@ -44,15 +44,15 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/riggers/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/riggers").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/talents").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/generations").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/illustrators").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/riggers").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/talents/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/generations/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/illustrators/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/riggers/**").hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.PUT, "/api/talents").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/generations").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/illustrators").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/riggers").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/talents/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/generations/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/illustrators/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/riggers/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.DELETE, "/api/talents/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/generations/**").hasRole("ADMIN")

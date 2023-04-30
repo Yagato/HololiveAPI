@@ -4,8 +4,10 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.yagato.HololiveAPI.dto.TalentDto;
 import com.yagato.HololiveAPI.model.Talent;
 import com.yagato.HololiveAPI.service.TalentService;
+import com.yagato.HololiveAPI.service.dto.TalentMapper;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -22,14 +24,18 @@ import java.util.List;
 public class ScheduledUpdateSubscribers {
 
     private final TalentService talentService;
+
+    private final TalentMapper talentMapper;
+
     private final Logger logger = LoggerFactory.getLogger(ScheduledUpdateSubscribers.class);
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
     Dotenv dotenv = Dotenv.load();
     String YOUTUBE_API_KEY = dotenv.get("YOUTUBE_API_KEY");
 
     @Autowired
-    public ScheduledUpdateSubscribers(TalentService talentService) {
+    public ScheduledUpdateSubscribers(TalentService talentService, TalentMapper talentMapper) {
         this.talentService = talentService;
+        this.talentMapper = talentMapper;
     }
 
     // cron's patterns: second, minute, hour, day, month, weekday, year (year is optional)
@@ -44,14 +50,14 @@ public class ScheduledUpdateSubscribers {
     // More info at: https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm
     @Scheduled(cron = "0 0 */8 * * *") // run this task every 8 hours
     public void updateSubscribers() throws UnirestException {
-        List<Talent> talents = talentService.findAllByOrderById();
+        List<TalentDto> talentDtos = talentService.findAllByOrderById();
 
-        for(Talent talent : talents) {
-            String channelId = talent.getChannelId();
+        for(TalentDto talentDto : talentDtos) {
+            String channelId = talentDto.channel_id();
 
 
             if(channelId == null) {
-                logger.info("Skipping talent: " + talent.getName());
+                logger.info("Skipping talent: " + talentDto.name());
                 continue;
             }
 
@@ -62,13 +68,15 @@ public class ScheduledUpdateSubscribers {
             JSONObject responseBody = response.getBody().getObject();
 
             if(!responseBody.has("items")) {
-                logger.info("Skipping talent: " + talent.getName());
+                logger.info("Skipping talent: " + talentDto.name());
                 continue;
             }
 
             JSONObject items = responseBody.getJSONArray("items").getJSONObject(0);
             JSONObject statistics = items.getJSONObject("statistics");
             String subscribers = statistics.getString("subscriberCount");
+
+            Talent talent = talentMapper.toTalent(talentDto);
 
             talent.setSubscribers(Integer.parseInt(subscribers));
 

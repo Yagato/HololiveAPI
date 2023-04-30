@@ -1,20 +1,21 @@
 package com.yagato.HololiveAPI.service;
 
+import com.yagato.HololiveAPI.dto.TalentDto;
 import com.yagato.HololiveAPI.model.Talent;
 
 import java.util.List;
 
 public interface TalentService {
 
-    List<Talent> findAll();
+    List<TalentDto> findAll();
 
-    List<Talent> findAllByOrderById();
+    List<TalentDto> findAllByOrderById();
 
-    Talent findByName(String name);
+    TalentDto findByName(String name);
 
-    Talent findByChannelId(String channelId);
+    TalentDto findByChannelId(String channelId);
 
-    Talent findById(int id);
+    TalentDto findById(int id);
 
     Talent save(Talent talent);
 

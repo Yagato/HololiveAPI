@@ -5,14 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TalentRepository extends JpaRepository<Talent, Integer> {
 
     List<Talent> findAllByOrderById();
 
-    Talent findByName(String name);
+    Optional<Talent> findByName(String name);
 
-    Talent findByChannelId(String channelId);
+    Optional<Talent> findByChannelId(String channelId);
 
     @Transactional
     void deleteByName(String name);

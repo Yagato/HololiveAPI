@@ -1,58 +1,68 @@
 package com.yagato.HololiveAPI.service.impl;
 
+import com.yagato.HololiveAPI.dto.TalentDto;
 import com.yagato.HololiveAPI.model.Talent;
 import com.yagato.HololiveAPI.repository.TalentRepository;
 import com.yagato.HololiveAPI.service.TalentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.yagato.HololiveAPI.service.dto.TalentMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @Service
+@RequiredArgsConstructor
 public class TalentServiceImpl implements TalentService {
 
-    private TalentRepository talentRepository;
+    private final TalentRepository talentRepository;
+    private final TalentMapper talentMapper;
 
-    @Autowired
-    public TalentServiceImpl(TalentRepository talentRepository) {
-        this.talentRepository = talentRepository;
+    @Override
+    public List<TalentDto> findAll() {
+        return talentRepository.findAll()
+                .stream()
+                .map(talentMapper)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Talent> findAll() {
-        return talentRepository.findAll();
+    public List<TalentDto> findAllByOrderById() {
+        return talentRepository.findAllByOrderById()
+                .stream()
+                .map(talentMapper)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Talent> findAllByOrderById() {
-        return talentRepository.findAllByOrderById();
+    public TalentDto findByName(String name) {
+        return talentRepository.findByName(name)
+                .map(talentMapper)
+                .orElseThrow(() -> new RuntimeException("Oops"));
     }
 
     @Override
-    public Talent findByName(String name) {
-        return talentRepository.findByName(name);
+    public TalentDto findByChannelId(String channelId) {
+        return talentRepository.findByChannelId(channelId)
+                .map(talentMapper)
+                .orElseThrow(() -> new RuntimeException("Oops"));
     }
 
     @Override
-    public Talent findByChannelId(String channelId) {
-        return talentRepository.findByChannelId(channelId);
-    }
+    public TalentDto findById(int id) {
+        Optional<TalentDto> result = talentRepository.findById(id).map(talentMapper);
 
-    @Override
-    public Talent findById(int id) {
-        Optional<Talent> result = talentRepository.findById(id);
+        TalentDto talentDto = null;
 
-        Talent talent = null;
-
-        if(result.isPresent()) {
-            talent = result.get();
-        }
-        else {
+        if (result.isPresent()) {
+            talentDto = result.get();
+        } else {
             throw new RuntimeException("Didn't find talent id - " + id);
         }
 
-        return talent;
+        return talentDto;
     }
 
     @Override

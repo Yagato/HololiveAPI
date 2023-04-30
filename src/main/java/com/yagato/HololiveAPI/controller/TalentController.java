@@ -1,78 +1,43 @@
 package com.yagato.HololiveAPI.controller;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.yagato.HololiveAPI.model.Illustrator;
-import com.yagato.HololiveAPI.service.IllustratorService;
-import com.yagato.HololiveAPI.utils.ImgurClient;
-import com.yagato.HololiveAPI.model.Rigger;
-import com.yagato.HololiveAPI.service.RiggerService;
+import com.yagato.HololiveAPI.dto.TalentDto;
+import com.yagato.HololiveAPI.model.Model;
 import com.yagato.HololiveAPI.model.Talent;
 import com.yagato.HololiveAPI.service.TalentService;
-import com.yagato.HololiveAPI.model.Model;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import com.yagato.HololiveAPI.service.dto.TalentMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/talents")
 public class TalentController {
 
     private final TalentService talentService;
-    private final IllustratorService illustratorService;
-    private final RiggerService riggerService;
-    private final ImgurClient imgurClient;
 
-    @Autowired
-    public TalentController(TalentService talentService,
-                            ImgurClient imgurClient,
-                            IllustratorService illustratorService,
-                            RiggerService riggerService) {
-        this.talentService = talentService;
-        this.imgurClient = imgurClient;
-        this.illustratorService = illustratorService;
-        this.riggerService = riggerService;
-    }
+    private final TalentMapper talentMapper;
 
-    @GetMapping("/talents")
-    public List<Talent> findAll() {
+    @GetMapping("/all")
+    public List<TalentDto> findAll() {
         return talentService.findAllByOrderById();
     }
 
-    @GetMapping("/talents/name={name}")
-    public Talent findByName(@PathVariable String name) {
+    @GetMapping("/name={name}")
+    public TalentDto findByName(@PathVariable String name) {
         name = name.replace("_", " ");
 
-        Talent talent = talentService.findByName(name);
-
-        if (talent == null) {
-            throw new RuntimeException("Didn't find talent - " + name);
-        }
-
-        return talent;
+        return talentService.findByName(name);
     }
 
-    @GetMapping("/talents/channelId={channelId}")
-    public Talent findByChannelId(@PathVariable String channelId) {
-        Talent talent = talentService.findByChannelId(channelId);
-
-        if (talent == null) {
-            throw new RuntimeException("Didn't find talent with channel ID - " + channelId);
-        }
-
-        return talent;
+    @GetMapping("/channelId={channelId}")
+    public TalentDto findByChannelId(@PathVariable String channelId) {
+        return talentService.findByChannelId(channelId);
     }
 
-    @PostMapping(
-            value = "/talents",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
-    )
-    public Talent addTalent(@RequestPart(name = "image", required = false) MultipartFile[] image,
-                            @RequestPart(name = "talent") Talent talent) throws IOException, UnirestException {
+    @PostMapping("/new")
+    public TalentDto addTalent(@RequestBody Talent talent) {
         talent.setId(0);
 
         if (talent.getAltNames() != null)
@@ -81,57 +46,25 @@ public class TalentController {
         if (talent.getHashtags() != null)
             talent.getHashtags().setTalent(talent);
 
-        List<Model> models = talent.getModels();
-
-        if (models != null) {
-            for (int i = 0; i < models.size(); i++) {
-                models.get(i).setId(0);
-
-                List<Illustrator> illustrators = models.get(i).getIllustrators();
-
-                if (illustrators != null) {
-                    for (Illustrator illustrator : illustrators) {
-                        Illustrator tempIllustrator = illustratorService.findByName(illustrator.getName());
-                        illustrator.setId(tempIllustrator.getId());
-                    }
-                }
-
-                List<Rigger> riggers = models.get(i).getRiggers();
-
-                if (riggers != null) {
-                    for (Rigger rigger : riggers) {
-                        Rigger tempRigger = riggerService.findByName(rigger.getName());
-                        rigger.setId(tempRigger.getId());
-                    }
-                }
-
-                if (image != null) {
-                    String base64URL = Base64.getEncoder().encodeToString(image[i].getBytes());
-                    String link = imgurClient.uploadImage(base64URL);
-                    models.get(i).setImageURL(link);
-                }
-
-                models.get(i).setTalent(talent);
-            }
-        }
-
         if (talent.getSocialMedia() != null)
             talent.getSocialMedia().setTalent(talent);
 
-        return talentService.save(talent);
+        talentService.save(talent);
+
+        return talentService.findByName(talent.getName());
     }
 
-    @PutMapping(value = "/talents")
-    public Talent updateTalent(@RequestBody Talent talent) {
-        Talent tempTalent = talentService.findByName(talent.getName());
+    @PutMapping("/update")
+    public TalentDto updateTalent(@RequestBody Talent talent) {
+        TalentDto tempTalentDto = talentService.findByName(talent.getName());
 
         if (talent.getAltNames() != null) {
-            talent.getAltNames().setId(tempTalent.getAltNames().getId());
+            talent.getAltNames().setId(tempTalentDto.alternative_names().getId());
             talent.getAltNames().setTalent(talent);
         }
 
         if (talent.getHashtags() != null) {
-            talent.getHashtags().setId(tempTalent.getHashtags().getId());
+            talent.getHashtags().setId(tempTalentDto.hashtags().getId());
             talent.getHashtags().setTalent(talent);
         }
 
@@ -147,20 +80,22 @@ public class TalentController {
         }
 
         if (talent.getSocialMedia() != null) {
-            talent.getSocialMedia().setId(tempTalent.getSocialMedia().getId());
+            talent.getSocialMedia().setId(tempTalentDto.social_media().getId());
             talent.getSocialMedia().setTalent(talent);
         }
 
-        return talentService.save(talent);
+        talentService.save(talent);
+
+        return talentService.findByName(talent.getName());
     }
 
-    @DeleteMapping("/talents/{name}")
+    @DeleteMapping("/{name}")
     public String deleteTalent(@PathVariable String name) {
         name = name.replace("_", " ");
 
-        Talent talent = talentService.findByName(name);
+        TalentDto talentDto = talentService.findByName(name);
 
-        if (talent == null) {
+        if (talentDto == null) {
             throw new RuntimeException("Couldn't find talent - " + name);
         }
 

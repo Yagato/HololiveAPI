@@ -30,7 +30,7 @@ public class Talent {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.MERGE)
     private AltNames altNames;
 
     @Column(name = "debut_date")
@@ -51,7 +51,7 @@ public class Talent {
     //@JsonManagedReference
     private List<Generation> generations;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.MERGE)
     private List<Model> models;
 
     @Column(name = "height")
@@ -76,10 +76,10 @@ public class Talent {
     @Column(name = "oshi_mark")
     private String oshiMark;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.MERGE)
     private SocialMedia socialMedia;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "talent", cascade = CascadeType.MERGE)
     private Hashtags hashtags;
 
     @Column(name = "catchphrase")
