@@ -4,6 +4,6 @@ import java.util.List;
 
 public record GenerationDto (
         String name,
-        List<String> talentsNames
+        List<String> talents
 ) {
 }
