@@ -35,29 +35,29 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers(HttpMethod.GET, "/api/talents").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/talents/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/generations").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/generations/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/illustrators").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/illustrators/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/riggers/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/riggers").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/models/**").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/api/talents/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/generations/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/illustrators/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/riggers/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/models/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.PUT, "/api/talents/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/generations/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/illustrators/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/riggers/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/models/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.DELETE, "/api/talents/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/generations/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/illustrators/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/riggers/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/models/**").hasRole("ADMIN")
         );
 
         // use HTTP Basic authentication
