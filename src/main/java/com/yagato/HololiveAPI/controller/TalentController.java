@@ -1,22 +1,11 @@
 package com.yagato.HololiveAPI.controller;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.yagato.HololiveAPI.model.Illustrator;
-import com.yagato.HololiveAPI.service.IllustratorService;
-import com.yagato.HololiveAPI.utils.ImgurClient;
-import com.yagato.HololiveAPI.model.Rigger;
-import com.yagato.HololiveAPI.service.RiggerService;
 import com.yagato.HololiveAPI.model.Talent;
 import com.yagato.HololiveAPI.service.TalentService;
 import com.yagato.HololiveAPI.model.Model;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 @RestController

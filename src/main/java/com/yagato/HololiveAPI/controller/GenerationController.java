@@ -1,27 +1,23 @@
 package com.yagato.HololiveAPI.controller;
 
 import com.yagato.HololiveAPI.model.Generation;
-import com.yagato.HololiveAPI.generation.GenerationResponse;
+import com.yagato.HololiveAPI.response.GenerationResponse;
 import com.yagato.HololiveAPI.service.GenerationService;
 import com.yagato.HololiveAPI.model.Talent;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/generations")
+@RequiredArgsConstructor
 public class GenerationController {
 
     private final GenerationService generationService;
 
-    @Autowired
-    public GenerationController(GenerationService generationService) {
-        this.generationService = generationService;
-    }
-
-    @GetMapping(value = "/generations")
+    @GetMapping(value = "/all")
     public List<GenerationResponse> findAll() {
         List<GenerationResponse> generationResponsesList = new ArrayList<>();
 
@@ -49,7 +45,7 @@ public class GenerationController {
         return generationResponsesList;
     }
 
-    @GetMapping("/generations/{generationId}")
+    @GetMapping("/{generationId}")
     public GenerationResponse findGenerationById(@PathVariable int generationId) {
         Generation generation = generationService.findById(generationId);
 
@@ -73,19 +69,19 @@ public class GenerationController {
         return generationResponse;
     }
 
-    @PostMapping("/generations")
+    @PostMapping("/new")
     public Generation addGeneration(@RequestBody Generation generation) {
         generation.setId(0);
 
         return generationService.save(generation);
     }
 
-    @PutMapping("/generations")
+    @PutMapping("/update")
     public Generation updateGeneration(@RequestBody Generation generation) {
         return generationService.save(generation);
     }
 
-    @DeleteMapping("/generations/{generationId}")
+    @DeleteMapping("/{generationId}")
     public String deleteGeneration(@PathVariable int generationId) {
         Generation tempGeneration = generationService.findById(generationId);
 

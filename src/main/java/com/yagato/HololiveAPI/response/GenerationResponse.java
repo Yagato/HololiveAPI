@@ -1,4 +1,4 @@
-package com.yagato.HololiveAPI.generation;
+package com.yagato.HololiveAPI.response;
 
 import java.util.List;
 

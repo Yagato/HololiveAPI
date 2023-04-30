@@ -2,26 +2,24 @@ package com.yagato.HololiveAPI.controller;
 
 import com.yagato.HololiveAPI.model.Illustrator;
 import com.yagato.HololiveAPI.service.IllustratorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/illustrators")
+@RequiredArgsConstructor
 public class IllustratorController {
 
     private final IllustratorService illustratorService;
 
-    public IllustratorController(IllustratorService illustratorService) {
-        this.illustratorService = illustratorService;
-    }
-
-    @GetMapping("/illustrators")
+    @GetMapping("/all")
     public List<Illustrator> findAll() {
         return illustratorService.findAllByOrderById();
     }
 
-    @GetMapping("/illustrators/{illustratorId}")
+    @GetMapping("/{illustratorId}")
     public Illustrator findIllustratorById(@PathVariable int illustratorId) {
         Illustrator illustrator = illustratorService.findById(illustratorId);
 
@@ -32,19 +30,19 @@ public class IllustratorController {
         return illustrator;
     }
 
-    @PostMapping("/illustrators")
+    @PostMapping("/new")
     public Illustrator addIllustrator(@RequestBody Illustrator illustrator) {
         illustrator.setId(0);
 
         return illustratorService.save(illustrator);
     }
 
-    @PutMapping("/illustrators")
+    @PutMapping("/update")
     public Illustrator updateIllustrator(@RequestBody Illustrator illustrator) {
         return illustratorService.save(illustrator);
     }
 
-    @DeleteMapping("/illustrators/{illustratorId}")
+    @DeleteMapping("/{illustratorId}")
     public String deleteIllustrator(@PathVariable int illustratorId) {
         Illustrator tempIllustrator = illustratorService.findById(illustratorId);
 
