@@ -91,19 +91,62 @@ public class ModelController {
     }
 
     // todo: add PUT mapping
-//    @PutMapping(
-//            value = "/update",
-//            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
-//    )
-//    public Model updateModel() {
-//
-//    }
+    @PutMapping(
+            value = "/update",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+    )
+    public Model updateModel(@RequestPart(name = "image", required = false) MultipartFile image,
+                             @RequestPart("model") Model model) throws UnirestException, IOException {
+
+        Model tempModel = modelService.findById(model.getId());
+
+        model.setTalent(tempModel.getTalent());
+
+        if(image != null) {
+            String base64URL = Base64.getEncoder().encodeToString(image.getBytes());
+            String link = imgurClient.uploadImage(base64URL);
+            model.setImageURL(link);
+        }
+
+        List<Illustrator> illustrators = model.getIllustrators();
+
+        if (illustrators != null) {
+            for (Illustrator illustrator : illustrators) {
+                System.out.println(illustrator);
+                Illustrator tempIllustrator = illustratorService.findByName(illustrator.getName());
+
+                if (tempIllustrator == null) {
+                    illustrator.setId(0);
+                    illustratorService.save(illustrator);
+                    tempIllustrator = illustratorService.findByName(illustrator.getName());
+                    illustrator.setId(tempIllustrator.getId());
+                }
+            }
+        }
+
+        List<Rigger> riggers = model.getRiggers();
+
+        if (riggers != null) {
+            for (Rigger rigger : riggers) {
+                Rigger tempRigger = riggerService.findByName(rigger.getName());
+
+                if (tempRigger == null) {
+                    rigger.setId(0);
+                    riggerService.save(rigger);
+                    tempRigger = riggerService.findByName(rigger.getName());
+                    rigger.setId(tempRigger.getId());
+                }
+            }
+        }
+
+        return modelService.save(model);
+    }
 
     @DeleteMapping("/{modelId}")
     public String deleteModel(@PathVariable int modelId) {
         Model model = modelService.findById(modelId);
 
-        if(model == null) {
+        if (model == null) {
             throw new RuntimeException("Couldn't find model - " + modelId);
         }
 
