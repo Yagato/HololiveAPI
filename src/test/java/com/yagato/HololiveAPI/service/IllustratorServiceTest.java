@@ -1,7 +1,5 @@
 package com.yagato.HololiveAPI.service;
 
-import com.yagato.HololiveAPI.exception.ApiRequestException;
-import com.yagato.HololiveAPI.model.Generation;
 import com.yagato.HololiveAPI.model.Illustrator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,8 +60,6 @@ public class IllustratorServiceTest {
     @DisplayName("Find by Invalid ID")
     @Test
     public void findByInvalidIdTest() {
-//        Illustrator illustrator = illustratorService.findById(0);
-
         assertNull(illustratorService.findById(0));
     }
 
@@ -78,8 +74,6 @@ public class IllustratorServiceTest {
     @DisplayName("Find by Invalid Name")
     @Test
     public void findByInvalidNameTest() {
-//        Illustrator illustrator = illustratorService.findByName("");
-
         assertNull(illustratorService.findByName(""));
     }
 

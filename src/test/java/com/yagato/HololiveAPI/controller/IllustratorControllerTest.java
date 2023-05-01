@@ -2,7 +2,8 @@ package com.yagato.HololiveAPI.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yagato.HololiveAPI.model.Generation;
-import com.yagato.HololiveAPI.service.GenerationService;
+import com.yagato.HololiveAPI.model.Illustrator;
+import com.yagato.HololiveAPI.service.IllustratorService;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -20,14 +21,15 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestPropertySource("/application-test.properties")
 @AutoConfigureMockMvc
 @SpringBootTest
 @Transactional
-public class GenerationControllerTest {
+public class IllustratorControllerTest {
 
     private static MockHttpServletRequest request;
 
@@ -42,19 +44,19 @@ public class GenerationControllerTest {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private GenerationService generationService;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Value("${sql.script.create.generations}")
-    private String sqlInsertGeneration;
+    @Autowired
+    private IllustratorService illustratorService;
 
-    @Value("${sql.script.delete.generations}")
-    private String sqlDeleteGeneration;
+    @Value("${sql.script.create.illustrator}")
+    private String sqlInsertIllustrator;
+
+    @Value("${sql.script.delete.illustrator}")
+    private String sqlDeleteIllustrator;
 
     @BeforeAll
     public static void setup() {
@@ -63,75 +65,75 @@ public class GenerationControllerTest {
 
     @BeforeEach
     public void setupDatabase() {
-        jdbcTemplate.execute(sqlInsertGeneration);
+        jdbcTemplate.execute(sqlInsertIllustrator);
     }
 
     @AfterEach
     public void setupAfterTransaction() {
-        jdbcTemplate.execute(sqlDeleteGeneration);
+        jdbcTemplate.execute(sqlDeleteIllustrator);
     }
 
     @DisplayName("Find All")
     @Test
     public void findAllTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/generations/all"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/illustrators/all"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
-    @DisplayName("Find Generation by ID")
+    @DisplayName("Find Illustrator by ID")
     @Test
-    public void findGenerationById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/generations/{generationId}", 1))
+    public void findIllustratorById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/illustrators/{illustratorId}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)));
     }
 
-    @DisplayName("Find Generation by Invalid ID")
+    @DisplayName("Find Illustrator by Invalid ID")
     @Test
-    public void findGenerationByInvalidId() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/generations/{generationId}", 0))
+    public void findIllustratorByInvalidId() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/illustrators/{illustratorId}", 0))
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.httpStatus", is("BAD_REQUEST")));
     }
 
-    @DisplayName("Add Generation")
+    @DisplayName("Add Illustrator")
     @Test
-    public void addGeneration() throws Exception {
-        Generation generation = new Generation(0, "JP1", null);
+    public void addIllustrator() throws Exception {
+        Illustrator illustrator = new Illustrator(0, "Suityan", null);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/generations/new")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/illustrators/new")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + HOLOLIVE_API_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(generation)))
+                        .content(objectMapper.writeValueAsString(illustrator)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name", is("JP1")));
+                .andExpect(jsonPath("$.name", is("Suityan")));
     }
 
-    @DisplayName("Add Generation No Credentials")
+    @DisplayName("Add Illustrator No Credentials")
     @Test
-    public void addGenerationNoCredentials() throws Exception {
-        Generation generation = new Generation(0, "JP1", null);
+    public void addIllustratorNoCredentials() throws Exception {
+        Illustrator illustrator = new Illustrator(0, "Suityan", null);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/generations/new")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/illustrators/new")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(generation)))
+                        .content(objectMapper.writeValueAsString(illustrator)))
                 .andExpect(status().is4xxClientError());
     }
 
-    @DisplayName("Update Generation")
+    @DisplayName("Update Illustrator")
     @Test
-    public void updateGeneration() throws Exception {
-        Generation generation = generationService.findByName("JP0");
-        generation.setName("Update");
+    public void updateIllustrator() throws Exception {
+        Illustrator illustrator = illustratorService.findByName("Teshima Nari");
+        illustrator.setName("Update");
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/generations/update")
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/illustrators/update")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + HOLOLIVE_API_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(generation)))
+                        .content(objectMapper.writeValueAsString(illustrator)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", is("Update")));
@@ -139,31 +141,31 @@ public class GenerationControllerTest {
 
     @DisplayName("Update No Credentials")
     @Test
-    public void updateGenerationNoCredentials() throws Exception {
-        Generation generation = generationService.findByName("JP0");
-        generation.setName("Update");
+    public void updateIllustratorNoCredentials() throws Exception {
+        Illustrator illustrator = illustratorService.findByName("Teshima Nari");
+        illustrator.setName("Update");
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/generations/update")
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/illustrators/update")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(generation)))
+                        .content(objectMapper.writeValueAsString(illustrator)))
                 .andExpect(status().is4xxClientError());
     }
 
     @DisplayName("Delete by ID")
     @Test
-    public void deleteGenerationById() throws Exception {
+    public void deleteIllustratorById() throws Exception {
         int id = 1;
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/generations/{generationId}", id)
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/illustrators/{illustratorId}", id)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + HOLOLIVE_API_TOKEN))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Deleted Generation with id - " + id));
+                .andExpect(content().string("Deleted illustrator id - " + id));
     }
 
     @DisplayName("Delete by Invalid ID")
     @Test
-    public void deleteGenerationByInvalidId() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/generations/{generationId}", 0)
+    public void deleteIllustratorByInvalidId() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/illustrators/{illustratorId}", 0)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + HOLOLIVE_API_TOKEN))
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.httpStatus", is("BAD_REQUEST")));
@@ -171,8 +173,8 @@ public class GenerationControllerTest {
 
     @DisplayName("Delete by ID No Credentials")
     @Test
-    public void deleteGenerationByIdNoCredentials() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/generations/{generationId}", 1))
+    public void deleteIllustratorByIdNoCredentials() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/illustrators/{illustratorId}", 1))
                 .andExpect(status().is4xxClientError());
     }
 
