@@ -1,7 +1,6 @@
 package com.yagato.HololiveAPI.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yagato.HololiveAPI.model.Generation;
 import com.yagato.HololiveAPI.model.Illustrator;
 import com.yagato.HololiveAPI.service.IllustratorService;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -84,7 +83,7 @@ public class IllustratorControllerTest {
 
     @DisplayName("Find Illustrator by ID")
     @Test
-    public void findIllustratorById() throws Exception {
+    public void findIllustratorByIdTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/illustrators/{illustratorId}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -93,7 +92,7 @@ public class IllustratorControllerTest {
 
     @DisplayName("Find Illustrator by Invalid ID")
     @Test
-    public void findIllustratorByInvalidId() throws Exception {
+    public void findIllustratorByInvalidIdTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/illustrators/{illustratorId}", 0))
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.httpStatus", is("BAD_REQUEST")));
@@ -101,7 +100,7 @@ public class IllustratorControllerTest {
 
     @DisplayName("Add Illustrator")
     @Test
-    public void addIllustrator() throws Exception {
+    public void addIllustratorTest() throws Exception {
         Illustrator illustrator = new Illustrator(0, "Suityan", null);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/illustrators/new")
@@ -115,7 +114,7 @@ public class IllustratorControllerTest {
 
     @DisplayName("Add Illustrator No Credentials")
     @Test
-    public void addIllustratorNoCredentials() throws Exception {
+    public void addIllustratorNoCredentialsTest() throws Exception {
         Illustrator illustrator = new Illustrator(0, "Suityan", null);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/illustrators/new")
@@ -126,7 +125,7 @@ public class IllustratorControllerTest {
 
     @DisplayName("Update Illustrator")
     @Test
-    public void updateIllustrator() throws Exception {
+    public void updateIllustratorTest() throws Exception {
         Illustrator illustrator = illustratorService.findByName("Teshima Nari");
         illustrator.setName("Update");
 
@@ -141,7 +140,7 @@ public class IllustratorControllerTest {
 
     @DisplayName("Update No Credentials")
     @Test
-    public void updateIllustratorNoCredentials() throws Exception {
+    public void updateIllustratorNoCredentialsTest() throws Exception {
         Illustrator illustrator = illustratorService.findByName("Teshima Nari");
         illustrator.setName("Update");
 
@@ -153,7 +152,7 @@ public class IllustratorControllerTest {
 
     @DisplayName("Delete by ID")
     @Test
-    public void deleteIllustratorById() throws Exception {
+    public void deleteIllustratorByIdTest() throws Exception {
         int id = 1;
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/illustrators/{illustratorId}", id)
@@ -164,7 +163,7 @@ public class IllustratorControllerTest {
 
     @DisplayName("Delete by Invalid ID")
     @Test
-    public void deleteIllustratorByInvalidId() throws Exception {
+    public void deleteIllustratorByInvalidIdTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/illustrators/{illustratorId}", 0)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + HOLOLIVE_API_TOKEN))
                 .andExpect(status().is4xxClientError())
@@ -173,7 +172,7 @@ public class IllustratorControllerTest {
 
     @DisplayName("Delete by ID No Credentials")
     @Test
-    public void deleteIllustratorByIdNoCredentials() throws Exception {
+    public void deleteIllustratorByIdNoCredentialsTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/illustrators/{illustratorId}", 1))
                 .andExpect(status().is4xxClientError());
     }

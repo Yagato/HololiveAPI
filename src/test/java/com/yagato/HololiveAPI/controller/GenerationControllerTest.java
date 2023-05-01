@@ -82,7 +82,7 @@ public class GenerationControllerTest {
 
     @DisplayName("Find Generation by ID")
     @Test
-    public void findGenerationById() throws Exception {
+    public void findGenerationByIdTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/generations/{generationId}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -91,7 +91,7 @@ public class GenerationControllerTest {
 
     @DisplayName("Find Generation by Invalid ID")
     @Test
-    public void findGenerationByInvalidId() throws Exception {
+    public void findGenerationByInvalidIdTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/generations/{generationId}", 0))
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.httpStatus", is("BAD_REQUEST")));
@@ -99,7 +99,7 @@ public class GenerationControllerTest {
 
     @DisplayName("Add Generation")
     @Test
-    public void addGeneration() throws Exception {
+    public void addGenerationTest() throws Exception {
         Generation generation = new Generation(0, "JP1", null);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/generations/new")
@@ -113,7 +113,7 @@ public class GenerationControllerTest {
 
     @DisplayName("Add Generation No Credentials")
     @Test
-    public void addGenerationNoCredentials() throws Exception {
+    public void addGenerationNoCredentialsTest() throws Exception {
         Generation generation = new Generation(0, "JP1", null);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/generations/new")
@@ -124,7 +124,7 @@ public class GenerationControllerTest {
 
     @DisplayName("Update Generation")
     @Test
-    public void updateGeneration() throws Exception {
+    public void updateGenerationTest() throws Exception {
         Generation generation = generationService.findByName("JP0");
         generation.setName("Update");
 
@@ -139,7 +139,7 @@ public class GenerationControllerTest {
 
     @DisplayName("Update No Credentials")
     @Test
-    public void updateGenerationNoCredentials() throws Exception {
+    public void updateGenerationNoCredentialsTest() throws Exception {
         Generation generation = generationService.findByName("JP0");
         generation.setName("Update");
 
@@ -151,7 +151,7 @@ public class GenerationControllerTest {
 
     @DisplayName("Delete by ID")
     @Test
-    public void deleteGenerationById() throws Exception {
+    public void deleteGenerationByIdTest() throws Exception {
         int id = 1;
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/generations/{generationId}", id)
@@ -162,7 +162,7 @@ public class GenerationControllerTest {
 
     @DisplayName("Delete by Invalid ID")
     @Test
-    public void deleteGenerationByInvalidId() throws Exception {
+    public void deleteGenerationByInvalidIdTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/generations/{generationId}", 0)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + HOLOLIVE_API_TOKEN))
                 .andExpect(status().is4xxClientError())
@@ -171,7 +171,7 @@ public class GenerationControllerTest {
 
     @DisplayName("Delete by ID No Credentials")
     @Test
-    public void deleteGenerationByIdNoCredentials() throws Exception {
+    public void deleteGenerationByIdNoCredentialsTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/generations/{generationId}", 1))
                 .andExpect(status().is4xxClientError());
     }
