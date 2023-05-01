@@ -10,6 +10,22 @@ The documentation is available right [here](https://documenter.getpostman.com/vi
 
 <br>
 <br>
+
+
+# Contributing
+Feel free to contribute  if you want to!
+
+To contribute, just fork the repository, make a branch, commit all your changes and make a pull request!
+
+But please, use the following commit message format:
+```
+Type(scope): Description
+```
+Where:
+- `Type` is the type of change you made (e.g. `Bug`, `Feat`, `Refactor`, `Docs`, etc.)
+- `scope` are the files/packages you are editing (e.g. `main`, `WebSecurityConfig`, `Talents`, etc.)
+- `Description` is a short description of the change (e.g. `Added a new status message`)
+
 <br>
 <br>
 <br>
