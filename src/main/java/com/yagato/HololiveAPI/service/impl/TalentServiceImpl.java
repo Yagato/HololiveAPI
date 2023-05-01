@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,17 +37,6 @@ public class TalentServiceImpl implements TalentService {
 
     @Override
     public Talent findById(int id) {
-//        Optional<Talent> result = talentRepository.findById(id);
-//
-//        Talent talent = null;
-//
-//        if(result.isPresent()) {
-//            talent = result.get();
-//        }
-//        else {
-//            throw new RuntimeException("Didn't find talent id - " + id);
-//        }
-
         return talentRepository.findById(id)
                 .orElseThrow(() -> new ApiRequestException("Couldn't find talent id - " + id));
     }
