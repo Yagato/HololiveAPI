@@ -1,5 +1,6 @@
 package com.yagato.HololiveAPI.service.impl;
 
+import com.yagato.HololiveAPI.exception.ApiRequestException;
 import com.yagato.HololiveAPI.model.Talent;
 import com.yagato.HololiveAPI.repository.TalentRepository;
 import com.yagato.HololiveAPI.service.TalentService;
@@ -37,18 +38,19 @@ public class TalentServiceImpl implements TalentService {
 
     @Override
     public Talent findById(int id) {
-        Optional<Talent> result = talentRepository.findById(id);
+//        Optional<Talent> result = talentRepository.findById(id);
+//
+//        Talent talent = null;
+//
+//        if(result.isPresent()) {
+//            talent = result.get();
+//        }
+//        else {
+//            throw new RuntimeException("Didn't find talent id - " + id);
+//        }
 
-        Talent talent = null;
-
-        if(result.isPresent()) {
-            talent = result.get();
-        }
-        else {
-            throw new RuntimeException("Didn't find talent id - " + id);
-        }
-
-        return talent;
+        return talentRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Couldn't find talent id - " + id));
     }
 
     @Override

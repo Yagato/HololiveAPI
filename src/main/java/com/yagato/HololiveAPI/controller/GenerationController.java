@@ -1,5 +1,6 @@
 package com.yagato.HololiveAPI.controller;
 
+import com.yagato.HololiveAPI.exception.ApiRequestException;
 import com.yagato.HololiveAPI.model.Generation;
 import com.yagato.HololiveAPI.response.GenerationResponse;
 import com.yagato.HololiveAPI.service.GenerationService;
@@ -49,10 +50,6 @@ public class GenerationController {
     public GenerationResponse findGenerationById(@PathVariable int generationId) {
         Generation generation = generationService.findById(generationId);
 
-        if(generation == null) {
-            throw new RuntimeException("Generation id not found - " + generationId);
-        }
-
         GenerationResponse generationResponse = new GenerationResponse();
         generationResponse.setId(generation.getId());
         generationResponse.setName(generation.getName());
@@ -86,7 +83,7 @@ public class GenerationController {
         Generation tempGeneration = generationService.findById(generationId);
 
         if(tempGeneration == null) {
-            throw new RuntimeException("Generation id not found - " + generationId);
+            throw new ApiRequestException("Generation id not found - " + generationId);
         }
 
         generationService.deleteById(generationId);

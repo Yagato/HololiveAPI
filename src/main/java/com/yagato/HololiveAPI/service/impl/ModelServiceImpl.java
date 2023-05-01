@@ -1,5 +1,6 @@
 package com.yagato.HololiveAPI.service.impl;
 
+import com.yagato.HololiveAPI.exception.ApiRequestException;
 import com.yagato.HololiveAPI.model.Model;
 import com.yagato.HololiveAPI.repository.ModelRepository;
 import com.yagato.HololiveAPI.service.ModelService;
@@ -23,7 +24,7 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public Model findById(int id) {
         return modelRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Couldn't find model with id: " + id));
+                .orElseThrow(() -> new ApiRequestException("Couldn't find model with id: " + id));
     }
 
     @Override

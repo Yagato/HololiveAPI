@@ -1,5 +1,6 @@
 package com.yagato.HololiveAPI.controller;
 
+import com.yagato.HololiveAPI.exception.ApiRequestException;
 import com.yagato.HololiveAPI.model.Rigger;
 import com.yagato.HololiveAPI.service.RiggerService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class RiggerController {
         Rigger rigger = riggerService.findById(riggerId);
 
         if(rigger == null) {
-            throw new RuntimeException("Rigger id not found - " + riggerId);
+            throw new ApiRequestException("Rigger id not found - " + riggerId);
         }
 
         return rigger;
@@ -47,7 +48,7 @@ public class RiggerController {
         Rigger tempRigger = riggerService.findById(riggerId);
 
         if(tempRigger == null) {
-            throw new RuntimeException("Rigger id not found - " + riggerId);
+            throw new ApiRequestException("Rigger id not found - " + riggerId);
         }
 
         riggerService.deleteById(riggerId);

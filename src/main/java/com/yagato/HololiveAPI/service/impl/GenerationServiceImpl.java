@@ -1,5 +1,6 @@
 package com.yagato.HololiveAPI.service.impl;
 
+import com.yagato.HololiveAPI.exception.ApiRequestException;
 import com.yagato.HololiveAPI.model.Generation;
 import com.yagato.HololiveAPI.repository.GenerationRepository;
 import com.yagato.HololiveAPI.service.GenerationService;
@@ -43,7 +44,7 @@ public class GenerationServiceImpl implements GenerationService {
             generation = result.get();
         }
         else {
-            throw new RuntimeException("Couldn't find generation id - " + id);
+            throw new ApiRequestException("Couldn't find generation id - " + id);
         }
 
         return generation;

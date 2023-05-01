@@ -1,5 +1,6 @@
 package com.yagato.HololiveAPI.controller;
 
+import com.yagato.HololiveAPI.exception.ApiRequestException;
 import com.yagato.HololiveAPI.model.Illustrator;
 import com.yagato.HololiveAPI.service.IllustratorService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class IllustratorController {
         Illustrator illustrator = illustratorService.findById(illustratorId);
 
         if(illustrator == null) {
-            throw new RuntimeException("Illustrator id not found - " + illustratorId);
+            throw new ApiRequestException("Illustrator id not found - " + illustratorId);
         }
 
         return illustrator;
@@ -47,7 +48,7 @@ public class IllustratorController {
         Illustrator tempIllustrator = illustratorService.findById(illustratorId);
 
         if(tempIllustrator == null) {
-            throw new RuntimeException("Illustrator id not found - " + illustratorId);
+            throw new ApiRequestException("Illustrator id not found - " + illustratorId);
         }
 
         illustratorService.deleteById(illustratorId);

@@ -1,5 +1,6 @@
 package com.yagato.HololiveAPI.controller;
 
+import com.yagato.HololiveAPI.exception.ApiRequestException;
 import com.yagato.HololiveAPI.model.Talent;
 import com.yagato.HololiveAPI.service.TalentService;
 import com.yagato.HololiveAPI.model.Model;
@@ -27,7 +28,7 @@ public class TalentController {
         Talent talent = talentService.findByName(name);
 
         if (talent == null) {
-            throw new RuntimeException("Didn't find talent - " + name);
+            throw new ApiRequestException("Couldn't find talent - " + name);
         }
 
         return talent;
@@ -38,7 +39,7 @@ public class TalentController {
         Talent talent = talentService.findByChannelId(channelId);
 
         if (talent == null) {
-            throw new RuntimeException("Didn't find talent with channel ID - " + channelId);
+            throw new ApiRequestException("Couldn't find talent with channel ID - " + channelId);
         }
 
         return talent;
@@ -100,7 +101,7 @@ public class TalentController {
         Talent talent = talentService.findByName(name);
 
         if (talent == null) {
-            throw new RuntimeException("Couldn't find talent - " + name);
+            throw new ApiRequestException("Couldn't find talent - " + name);
         }
 
         talentService.deleteByName(name);

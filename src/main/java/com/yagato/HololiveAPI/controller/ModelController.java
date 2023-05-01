@@ -1,6 +1,7 @@
 package com.yagato.HololiveAPI.controller;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.yagato.HololiveAPI.exception.ApiRequestException;
 import com.yagato.HololiveAPI.model.Illustrator;
 import com.yagato.HololiveAPI.model.Model;
 import com.yagato.HololiveAPI.model.Rigger;
@@ -32,6 +33,7 @@ public class ModelController {
 
     @GetMapping("/{talentId}")
     public List<Model> findByTalentId(@PathVariable int talentId) {
+        talentService.findById(talentId);
         return modelService.findByTalentId(talentId);
     }
 
@@ -146,7 +148,7 @@ public class ModelController {
         Model model = modelService.findById(modelId);
 
         if (model == null) {
-            throw new RuntimeException("Couldn't find model - " + modelId);
+            throw new ApiRequestException("Couldn't find model - " + modelId);
         }
 
         modelService.deleteById(modelId);
