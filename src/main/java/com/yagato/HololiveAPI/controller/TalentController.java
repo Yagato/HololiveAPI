@@ -62,7 +62,7 @@ public class TalentController {
 
     @PutMapping("/update")
     public Talent updateTalent(@RequestBody Talent talent) {
-        Talent tempTalent = talentService.findByName(talent.getName());
+        Talent tempTalent = talentService.findById(talent.getId());
 
         if (talent.getAltNames() != null) {
             talent.getAltNames().setId(tempTalent.getAltNames().getId());

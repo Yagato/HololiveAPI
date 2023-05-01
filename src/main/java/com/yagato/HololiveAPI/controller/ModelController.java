@@ -90,7 +90,6 @@ public class ModelController {
         return modelService.save(model);
     }
 
-    // todo: add PUT mapping
     @PutMapping(
             value = "/update",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
