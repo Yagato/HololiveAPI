@@ -47,6 +47,10 @@ public class ModelController {
 
         Talent talent = talentService.findByName(talentName);
 
+        if (talent == null) {
+            throw new ApiRequestException("Couldn't find talent");
+        }
+
         model.setId(0);
 
         List<Illustrator> illustrators = model.getIllustrators();
@@ -81,11 +85,9 @@ public class ModelController {
             }
         }
 
-        if (image != null) {
-            String base64URL = Base64.getEncoder().encodeToString(image.getBytes());
-            String link = imgurClient.uploadImage(base64URL);
-            model.setImageURL(link);
-        }
+        String base64URL = Base64.getEncoder().encodeToString(image.getBytes());
+        String link = imgurClient.uploadImage(base64URL);
+        model.setImageURL(link);
 
         model.setTalent(talent);
 
@@ -103,7 +105,7 @@ public class ModelController {
 
         model.setTalent(tempModel.getTalent());
 
-        if(image != null) {
+        if (image != null) {
             String base64URL = Base64.getEncoder().encodeToString(image.getBytes());
             String link = imgurClient.uploadImage(base64URL);
             model.setImageURL(link);
@@ -113,7 +115,6 @@ public class ModelController {
 
         if (illustrators != null) {
             for (Illustrator illustrator : illustrators) {
-                System.out.println(illustrator);
                 Illustrator tempIllustrator = illustratorService.findByName(illustrator.getName());
 
                 if (tempIllustrator == null) {
