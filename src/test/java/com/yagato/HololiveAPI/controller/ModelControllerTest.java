@@ -83,12 +83,6 @@ public class ModelControllerTest {
     @Value("${sql.script.create.illustrator}")
     private String sqlInsertIllustrator;
 
-    @Value("${sql.script.create.model_illustrators}")
-    private String sqlInsertModelIllustrator;
-
-    @Value("${sql.script.create.model_riggers}")
-    private String sqlInsertModelRigger;
-
     @Value("${sql.script.create.rigger}")
     private String sqlInsertRigger;
 
@@ -112,8 +106,6 @@ public class ModelControllerTest {
         jdbcTemplate.execute(sqlInsertModel);
         jdbcTemplate.execute(sqlInsertIllustrator);
         jdbcTemplate.execute(sqlInsertRigger);
-//        jdbcTemplate.execute(sqlInsertModelIllustrator);
-//        jdbcTemplate.execute(sqlInsertModelRigger);
     }
 
     @AfterEach
