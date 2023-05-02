@@ -18,15 +18,12 @@ public class Model {
     @SequenceGenerator(name = "models_id_generator", sequenceName = "models_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "models_id_generator", strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
-    @JsonProperty("id")
     private Integer id;
 
     @Column(name = "name")
-    @JsonProperty("name")
     private String name;
 
     @Column(name = "image_url")
-    @JsonProperty("image_url")
     private String imageURL;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,7 +44,6 @@ public class Model {
             joinColumns = @JoinColumn(name = "model_id"),
             inverseJoinColumns = @JoinColumn(name = "illustrator_id")
     )
-    @JsonProperty("illustrators")
     private List<Illustrator> illustrators;
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -62,6 +58,5 @@ public class Model {
             joinColumns = @JoinColumn(name = "model_id"),
             inverseJoinColumns = @JoinColumn(name = "rigger_id")
     )
-    @JsonProperty("riggers")
     private List<Rigger> riggers;
 }

@@ -21,15 +21,12 @@ public class AltNames {
     private Integer id;
 
     @Column(name = "japanese_name")
-    @JsonProperty("japanese_name")
     private String japaneseName;
 
     @Column(name = "english_name")
-    @JsonProperty("english_name")
     private String englishName;
 
     @Column(name = "chinese_name")
-    @JsonProperty("chinese_name")
     private String chineseName;
 
     @OneToOne(fetch = FetchType.LAZY)
