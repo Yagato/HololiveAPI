@@ -1,0 +1,153 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > IllustratorServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.yagato.HololiveAPI.service.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: IllustratorServiceImpl (com.yagato.HololiveAPI.service.impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">IllustratorServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.yagato.HololiveAPI.service.impl;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.yagato.HololiveAPI.model.Illustrator;
+<i class="no-highlight">4</i>&nbsp;import com.yagato.HololiveAPI.repository.IllustratorRepository;
+<i class="no-highlight">5</i>&nbsp;import com.yagato.HololiveAPI.service.IllustratorService;
+<i class="no-highlight">6</i>&nbsp;import org.springframework.stereotype.Service;
+<i class="no-highlight">7</i>&nbsp;
+<i class="no-highlight">8</i>&nbsp;import java.util.List;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;@Service
+<i class="no-highlight">11</i>&nbsp;public class IllustratorServiceImpl implements IllustratorService {
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;    private final IllustratorRepository illustratorRepository;
+<i class="no-highlight">14</i>&nbsp;
+<b class="fc"><i class="no-highlight">15</i>&nbsp;    public IllustratorServiceImpl(IllustratorRepository illustratorRepository) {</b>
+<b class="fc"><i class="no-highlight">16</i>&nbsp;        this.illustratorRepository = illustratorRepository;</b>
+<i class="no-highlight">17</i>&nbsp;    }
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;    @Override
+<i class="no-highlight">20</i>&nbsp;    public List&lt;Illustrator&gt; findAll() {
+<b class="fc"><i class="no-highlight">21</i>&nbsp;        return illustratorRepository.findAll();</b>
+<i class="no-highlight">22</i>&nbsp;    }
+<i class="no-highlight">23</i>&nbsp;
+<i class="no-highlight">24</i>&nbsp;    @Override
+<i class="no-highlight">25</i>&nbsp;    public List&lt;Illustrator&gt; findAllByOrderById() {
+<b class="nc"><i class="no-highlight">26</i>&nbsp;        return illustratorRepository.findAllByOrderById();</b>
+<i class="no-highlight">27</i>&nbsp;    }
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;    @Override
+<i class="no-highlight">30</i>&nbsp;    public Illustrator findById(int id) {
+<b class="fc"><i class="no-highlight">31</i>&nbsp;        return illustratorRepository.findById(id);</b>
+<i class="no-highlight">32</i>&nbsp;    }
+<i class="no-highlight">33</i>&nbsp;
+<i class="no-highlight">34</i>&nbsp;    @Override
+<i class="no-highlight">35</i>&nbsp;    public Illustrator findByName(String name) {
+<b class="fc"><i class="no-highlight">36</i>&nbsp;        return illustratorRepository.findByName(name);</b>
+<i class="no-highlight">37</i>&nbsp;    }
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;    @Override
+<i class="no-highlight">40</i>&nbsp;    public Illustrator save(Illustrator illustrator) {
+<b class="fc"><i class="no-highlight">41</i>&nbsp;        return illustratorRepository.save(illustrator);</b>
+<i class="no-highlight">42</i>&nbsp;    }
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;    @Override
+<i class="no-highlight">45</i>&nbsp;    public void deleteById(int id) {
+<b class="fc"><i class="no-highlight">46</i>&nbsp;        illustratorRepository.deleteById(id);</b>
+<i class="no-highlight">47</i>&nbsp;    }
+<i class="no-highlight">48</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-05-01 23:04</div>
+</div>
+</body>
+</html>

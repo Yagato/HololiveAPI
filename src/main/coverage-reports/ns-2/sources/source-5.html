@@ -1,0 +1,163 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > TalentServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.yagato.HololiveAPI.service.impl</a>
+</div>
+
+<h1>Coverage Summary for Class: TalentServiceImpl (com.yagato.HololiveAPI.service.impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TalentServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (8/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (9/10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package com.yagato.HololiveAPI.service.impl;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import com.yagato.HololiveAPI.exception.ApiRequestException;
+<i class="no-highlight">4</i>&nbsp;import com.yagato.HololiveAPI.model.Talent;
+<i class="no-highlight">5</i>&nbsp;import com.yagato.HololiveAPI.repository.TalentRepository;
+<i class="no-highlight">6</i>&nbsp;import com.yagato.HololiveAPI.service.TalentService;
+<i class="no-highlight">7</i>&nbsp;import lombok.RequiredArgsConstructor;
+<i class="no-highlight">8</i>&nbsp;import org.springframework.stereotype.Service;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;import java.util.List;
+<i class="no-highlight">11</i>&nbsp;
+<i class="no-highlight">12</i>&nbsp;@Service
+<b class="fc"><i class="no-highlight">13</i>&nbsp;@RequiredArgsConstructor</b>
+<i class="no-highlight">14</i>&nbsp;public class TalentServiceImpl implements TalentService {
+<i class="no-highlight">15</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;    private final TalentRepository talentRepository;
+<i class="no-highlight">17</i>&nbsp;
+<i class="no-highlight">18</i>&nbsp;    @Override
+<i class="no-highlight">19</i>&nbsp;    public List&lt;Talent&gt; findAll() {
+<b class="fc"><i class="no-highlight">20</i>&nbsp;        return talentRepository.findAll();</b>
+<i class="no-highlight">21</i>&nbsp;    }
+<i class="no-highlight">22</i>&nbsp;
+<i class="no-highlight">23</i>&nbsp;    @Override
+<i class="no-highlight">24</i>&nbsp;    public List&lt;Talent&gt; findAllByOrderById() {
+<b class="nc"><i class="no-highlight">25</i>&nbsp;        return talentRepository.findAllByOrderById();</b>
+<i class="no-highlight">26</i>&nbsp;    }
+<i class="no-highlight">27</i>&nbsp;
+<i class="no-highlight">28</i>&nbsp;    @Override
+<i class="no-highlight">29</i>&nbsp;    public Talent findByName(String name) {
+<b class="fc"><i class="no-highlight">30</i>&nbsp;        return talentRepository.findByName(name);</b>
+<i class="no-highlight">31</i>&nbsp;    }
+<i class="no-highlight">32</i>&nbsp;
+<i class="no-highlight">33</i>&nbsp;    @Override
+<i class="no-highlight">34</i>&nbsp;    public Talent findByChannelId(String channelId) {
+<b class="fc"><i class="no-highlight">35</i>&nbsp;        return talentRepository.findByChannelId(channelId);</b>
+<i class="no-highlight">36</i>&nbsp;    }
+<i class="no-highlight">37</i>&nbsp;
+<i class="no-highlight">38</i>&nbsp;    @Override
+<i class="no-highlight">39</i>&nbsp;    public Talent findById(int id) {
+<b class="fc"><i class="no-highlight">40</i>&nbsp;        return talentRepository.findById(id)</b>
+<b class="fc"><i class="no-highlight">41</i>&nbsp;                .orElseThrow(() -&gt; new ApiRequestException(&quot;Couldn&#39;t find talent id - &quot; + id));</b>
+<i class="no-highlight">42</i>&nbsp;    }
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;    @Override
+<i class="no-highlight">45</i>&nbsp;    public Talent save(Talent talent) {
+<b class="fc"><i class="no-highlight">46</i>&nbsp;        return talentRepository.save(talent);</b>
+<i class="no-highlight">47</i>&nbsp;    }
+<i class="no-highlight">48</i>&nbsp;
+<i class="no-highlight">49</i>&nbsp;    @Override
+<i class="no-highlight">50</i>&nbsp;    public void deleteById(int id) {
+<b class="fc"><i class="no-highlight">51</i>&nbsp;        talentRepository.deleteById(id);</b>
+<i class="no-highlight">52</i>&nbsp;    }
+<i class="no-highlight">53</i>&nbsp;
+<i class="no-highlight">54</i>&nbsp;    @Override
+<i class="no-highlight">55</i>&nbsp;    public void deleteByName(String name) {
+<b class="fc"><i class="no-highlight">56</i>&nbsp;        talentRepository.deleteByName(name);</b>
+<i class="no-highlight">57</i>&nbsp;    }
+<i class="no-highlight">58</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-05-01 23:04</div>
+</div>
+</body>
+</html>
